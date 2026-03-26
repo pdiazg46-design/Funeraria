@@ -17,7 +17,7 @@ export default function TarifaPlanaForm({ defaultTarifa, servicioId }: { default
     setVal(parseInt(raw).toLocaleString('es-CL'));
   };
 
-  const formAction = async (formData: FormData) => {
+  const handleFixTarifa = async () => {
     setIsPending(true);
     try {
       const tarifaClean = parseInt(val.replace(/\D/g, ""));
@@ -28,7 +28,7 @@ export default function TarifaPlanaForm({ defaultTarifa, servicioId }: { default
   };
 
   return (
-    <form action={formAction} className="flex gap-2 items-center">
+    <div className="flex gap-2 items-center">
       <div className="relative w-32 md:w-40">
         <span className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-500 font-bold">$</span>
         <input 
@@ -41,12 +41,13 @@ export default function TarifaPlanaForm({ defaultTarifa, servicioId }: { default
         />
       </div>
       <button 
-        type="submit" 
+        type="button"
+        onClick={handleFixTarifa}
         disabled={isPending}
         className="bg-slate-800 text-slate-300 px-3 py-1.5 rounded-lg hover:bg-amber-500 hover:text-slate-950 hover:border-amber-500 transition-colors text-[9px] font-bold uppercase tracking-widest border border-slate-700 flex justify-center items-center shrink-0 h-full"
       >
         {isPending ? <Loader2 className="w-3 h-3 animate-spin" /> : "FIJAR TARIFA"}
       </button>
-    </form>
+    </div>
   );
 }

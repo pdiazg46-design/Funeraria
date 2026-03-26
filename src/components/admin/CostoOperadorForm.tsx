@@ -17,7 +17,7 @@ export default function CostoOperadorForm({ defaultTarifa, servicioId }: { defau
     setVal(parseInt(raw).toLocaleString('es-CL'));
   };
 
-  const formAction = async (formData: FormData) => {
+  const handleFixCosto = async () => {
     setIsPending(true);
     try {
       const tarifaClean = parseInt(val.replace(/\D/g, ""));
@@ -28,7 +28,7 @@ export default function CostoOperadorForm({ defaultTarifa, servicioId }: { defau
   };
 
   return (
-    <form action={formAction} className="flex gap-2 items-center mt-2">
+    <div className="flex gap-2 items-center mt-2">
       <div className="relative w-full">
         <span className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-500 font-bold">$</span>
         <input 
@@ -42,12 +42,13 @@ export default function CostoOperadorForm({ defaultTarifa, servicioId }: { defau
         />
       </div>
       <button 
-        type="submit" 
+        type="button" 
+        onClick={handleFixCosto}
         disabled={isPending}
         className="bg-slate-800 text-slate-300 px-6 py-2 rounded-xl hover:bg-emerald-500 hover:text-slate-950 hover:border-emerald-500 transition-colors text-[10px] font-bold uppercase tracking-widest border border-slate-700 shrink-0 h-[42px] flex items-center justify-center"
       >
         {isPending ? <Loader2 className="w-4 h-4 animate-spin" /> : "FIJAR TARIFA"}
       </button>
-    </form>
+    </div>
   );
 }
