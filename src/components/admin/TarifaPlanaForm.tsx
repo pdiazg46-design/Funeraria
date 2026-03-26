@@ -20,9 +20,8 @@ export default function TarifaPlanaForm({ defaultTarifa, servicioId }: { default
   const formAction = async (formData: FormData) => {
     setIsPending(true);
     try {
-      formData.set("tarifaPlanaRM_CLP", val.replace(/\D/g, ""));
-      // The action is already imported, we can call it directly
-      await actualizarTarifaPlanaGlobal(servicioId, formData);
+      const tarifaClean = parseInt(val.replace(/\D/g, ""));
+      await actualizarTarifaPlanaGlobal(servicioId, tarifaClean);
     } finally {
       setIsPending(false);
     }

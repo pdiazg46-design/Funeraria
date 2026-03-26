@@ -20,8 +20,8 @@ export default function CostoOperadorForm({ defaultTarifa, servicioId }: { defau
   const formAction = async (formData: FormData) => {
     setIsPending(true);
     try {
-      formData.set("costoOperadorCLP", val.replace(/\D/g, ""));
-      await actualizarCostoOperador(servicioId, formData);
+      const tarifaClean = parseInt(val.replace(/\D/g, ""));
+      await actualizarCostoOperador(servicioId, tarifaClean);
     } finally {
       setIsPending(false);
     }

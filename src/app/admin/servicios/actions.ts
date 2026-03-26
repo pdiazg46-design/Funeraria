@@ -45,9 +45,12 @@ export async function actualizarCostos(servicioId: string, formData: FormData) {
   revalidatePath("/admin/servicios");
 }
 
-export async function actualizarTarifaPlanaGlobal(servicioId: string, formData: FormData) {
-  const nuevaTarifa = parseFloat(formData.get("tarifaPlanaRM_CLP") as string);
-  if (!nuevaTarifa) return;
+export async function actualizarTarifaPlanaGlobal(servicioId: string, nuevaTarifa: number) {
+  console.log("DEBUG EVENT - Received Tarifa:", nuevaTarifa);
+  if (!nuevaTarifa) {
+    console.error("DEBUG EVENT - Aborting, nuevaTarifa invalid", nuevaTarifa);
+    return;
+  }
 
   let config = await prisma.configuracionGlobal.findFirst();
   if (config) {
@@ -73,9 +76,7 @@ export async function actualizarTarifaPlanaGlobal(servicioId: string, formData: 
   revalidatePath(`/admin/servicios/[id]`, 'page');
 }
 
-export async function actualizarCostoOperador(servicioId: string, formData: FormData) {
-  const costoOperadorCLP = parseFloat(formData.get("costoOperadorCLP") as string);
-  
+export async function actualizarCostoOperador(servicioId: string, costoOperadorCLP: number) {
   await prisma.servicioFunerario.update({
     where: { id: servicioId },
     data: { costoOperadorCLP }
