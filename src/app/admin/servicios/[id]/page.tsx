@@ -117,7 +117,7 @@ export default async function ServicioDetallePage({ params }: { params: Promise<
               <label className="block text-sm font-semibold text-gray-600 mb-1">Operador / Funeraria</label>
               <select name="proveedorId" defaultValue={servicio.proveedorId || ""} className="w-full border-gray-300 rounded-md shadow-sm p-2 bg-gray-50 border focus:ring-2 focus:ring-gray-900 focus:outline-none">
                 <option value="">-- Sin Asignar --</option>
-                {proveedores.map(p => (
+                {proveedores.map((p: any) => (
                   <option key={p.id} value={p.id}>{p.nombreEmpresa} (RUT: {p.rutEmpresa})</option>
                 ))}
               </select>

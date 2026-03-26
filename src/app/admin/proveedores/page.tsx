@@ -8,7 +8,7 @@ export default async function ProveedoresPage() {
   });
 
   const comunas = await prisma.comuna.findMany({ orderBy: { nombre: 'asc'} });
-  const comunasMap = new Map(comunas.map((c) => [c.id, c.nombre]));
+  const comunasMap = new Map(comunas.map((c: any) => [c.id, c.nombre]));
 
   return (
     <div className="space-y-6">
@@ -36,7 +36,7 @@ export default async function ProveedoresPage() {
             <label className="block text-sm font-medium text-gray-700 mb-1">Comuna Base</label>
             <select required name="comunaBaseId" className="w-full border-gray-300 rounded-md shadow-sm p-2 bg-gray-50 border focus:ring-2 focus:ring-gray-900 focus:outline-none">
               <option value="">Selecciona Comuna</option>
-              {comunas.map(c => (
+              {comunas.map((c: any) => (
                 <option key={c.id} value={c.id}>{c.nombre}</option>
               ))}
             </select>
@@ -66,7 +66,7 @@ export default async function ProveedoresPage() {
                   <td colSpan={5} className="px-6 py-8 text-center text-sm text-gray-500">No hay proveedores registrados.</td>
                 </tr>
               )}
-              {proveedores.map((item) => {
+              {proveedores.map((item: any) => {
                 const deleteAction = deleteProveedor.bind(null, item.id);
                 return (
                   <tr key={item.id} className="hover:bg-gray-50 transition-colors">
@@ -74,7 +74,7 @@ export default async function ProveedoresPage() {
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{item.rutEmpresa}</td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{item.contacto}</td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                      {comunasMap.get(item.comunaBaseId) || `ID ${item.comunaBaseId}`}
+                      {String(comunasMap.get(item.comunaBaseId) || `ID ${item.comunaBaseId}`)}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                       <form action={deleteAction} className="inline">

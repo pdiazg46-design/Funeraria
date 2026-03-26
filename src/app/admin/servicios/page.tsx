@@ -38,7 +38,7 @@ export default async function ServiciosPage() {
                   <td colSpan={6} className="px-6 py-8 text-center text-sm text-gray-500">No hay servicios registrados.</td>
                 </tr>
               )}
-              {servicios.map((s) => (
+              {servicios.map((s: any) => (
                 <tr key={s.id} className="hover:bg-gray-50 transition-colors">
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                     {s.createdAt.toLocaleDateString("es-CL")}

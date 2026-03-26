@@ -54,7 +54,7 @@ export default async function CatalogoPage() {
                   <td colSpan={5} className="px-6 py-8 text-center text-sm text-gray-500">No hay productos registrados en el catálogo.</td>
                 </tr>
               )}
-              {catalogos.map((item) => {
+              {catalogos.map((item: any) => {
                 const deleteAction = deleteCatalogo.bind(null, item.id);
                 return (
                   <tr key={item.id} className="hover:bg-gray-50 transition-colors">
