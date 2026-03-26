@@ -111,23 +111,15 @@ export default async function ServicioDetallePage({ params }: { params: Promise<
                 <p className="text-xl font-bold text-slate-200">{servicio.kmCalculadosAlgoritmo} <span className="text-xs text-slate-500">km</span></p>
               </div>
               <div>
-                <p className="font-bold text-[10px] uppercase tracking-widest text-slate-500 mb-1">Tarifa Plana RM</p>
-                <div className="text-sm font-bold mt-1">
+                <p className="font-bold text-[10px] uppercase tracking-widest text-slate-500 mb-1">Tarifa Plana RM / Global</p>
+                <div className="mt-1">
                   {servicio.aplicarTarifaPlanaRM ? (
-                    <div className="flex flex-col gap-1.5">
-                      <span className="px-2 py-1 bg-amber-500/10 text-amber-400 border border-amber-500/20 rounded inline-block w-fit text-xs">
-                        Aplicada (${tarifaPlanaRM.toLocaleString('es-CL')})
-                      </span>
-                    </div>
+                    <TarifaPlanaForm defaultTarifa={tarifaPlanaRM} servicioId={id} />
                   ) : (
-                    <span className="text-slate-500">No aplica</span>
+                    <span className="text-sm font-bold text-slate-500 block mt-2">No aplica</span>
                   )}
                 </div>
               </div>
-            </div>
-
-            <div className="pt-2">
-              <TarifaPlanaForm defaultTarifa={tarifaPlanaRM} servicioId={id} />
             </div>
 
             <div>
@@ -141,6 +133,34 @@ export default async function ServicioDetallePage({ params }: { params: Promise<
               <p className="font-bold text-[10px] uppercase tracking-widest text-amber-500 mb-1">Costo Total Traslado</p>
               <p className="text-4xl font-bold text-white tracking-wider">${servicio.costoTotalTrasladoCLP.toLocaleString('es-CL')}</p>
             </div>
+            
+            {(servicio.ataud) && (
+              <div className="pt-6 mt-6 border-t-2 border-slate-800/80">
+                <div className="bg-slate-950 p-5 rounded-2xl border border-amber-500/30 shadow-[0_0_25px_rgba(245,158,11,0.05)]">
+                  <h4 className="text-[10px] uppercase font-bold tracking-widest text-amber-500 mb-4 flex items-center gap-2">
+                    <span className="w-1.5 h-1.5 rounded-full bg-amber-500"></span>
+                    Voucher de Cobro Final
+                  </h4>
+                  
+                  <div className="space-y-3 mb-4 text-sm font-mono text-slate-300">
+                    <div className="flex justify-between items-center">
+                      <span>Valor Comercial Urna</span>
+                      <span className="font-bold">${servicio.ataud.precioBaseCLP.toLocaleString('es-CL')}</span>
+                    </div>
+                    <div className="flex justify-between items-center pb-3 border-b border-slate-800/80">
+                      <span>Costo Total Logística</span>
+                      <span className="font-bold">${servicio.costoTotalTrasladoCLP.toLocaleString('es-CL')}</span>
+                    </div>
+                    <div className="flex justify-between items-end pt-2">
+                      <span className="text-xs uppercase font-bold tracking-widest text-slate-400">Tarifa Total Servicio</span>
+                      <span className="text-3xl font-bold text-emerald-400 tracking-wider">
+                        ${(servicio.ataud.precioBaseCLP + servicio.costoTotalTrasladoCLP).toLocaleString('es-CL')}
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )}
           </form>
         </div>
 

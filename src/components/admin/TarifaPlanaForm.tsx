@@ -29,28 +29,24 @@ export default function TarifaPlanaForm({ defaultTarifa, servicioId }: { default
   };
 
   return (
-    <form action={formAction} className="bg-slate-950 p-4 rounded-xl border border-slate-800 shadow-inner">
-      <label className="block text-[10px] uppercase font-bold tracking-widest text-slate-500 mb-2">Modificar Tarifa Plana Global RM</label>
-      <p className="text-[10px] text-slate-600 mb-3 leading-tight italic">Al modificar esto, cambiará el valor base de logística para <strong>todos</strong> los servicios futuros dentro de RM.</p>
-      <div className="flex gap-2">
-        <div className="relative w-full">
-          <span className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-500 font-bold">$</span>
-          <input 
-            type="text" 
-            name="tarifaPlanaRM_CLP" 
-            value={val}
-            onChange={handleChange}
-            className="w-full border-slate-700 rounded-xl shadow-sm py-2 pl-7 pr-3 bg-slate-900 border focus:border-amber-500 focus:ring-1 focus:ring-amber-500 text-amber-500 font-mono focus:outline-none transition-colors" 
-          />
-        </div>
-        <button 
-          type="submit" 
-          disabled={isPending}
-          className="bg-slate-800 text-slate-300 px-4 rounded-xl hover:bg-amber-500 hover:text-slate-950 hover:border-amber-500 transition-colors text-[10px] font-bold uppercase tracking-widest border border-slate-700 w-[120px] flex justify-center items-center shrink-0"
-        >
-          {isPending ? <Loader2 className="w-4 h-4 animate-spin" /> : "FIJAR TARIFA RM"}
-        </button>
+    <form action={formAction} className="flex gap-2 items-center">
+      <div className="relative w-32 md:w-40">
+        <span className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-500 font-bold">$</span>
+        <input 
+          type="text" 
+          name="tarifaPlanaRM_CLP" 
+          value={val}
+          onChange={handleChange}
+          className="w-full border-amber-500/30 rounded-lg shadow-sm py-1.5 pl-7 pr-2 bg-amber-500/10 border focus:border-amber-400 focus:ring-1 focus:ring-amber-400 text-amber-400 font-bold font-mono focus:outline-none transition-colors text-sm" 
+        />
       </div>
+      <button 
+        type="submit" 
+        disabled={isPending}
+        className="bg-slate-800 text-slate-300 px-3 py-1.5 rounded-lg hover:bg-amber-500 hover:text-slate-950 hover:border-amber-500 transition-colors text-[9px] font-bold uppercase tracking-widest border border-slate-700 flex justify-center items-center shrink-0 h-full"
+      >
+        {isPending ? <Loader2 className="w-3 h-3 animate-spin" /> : "FIJAR TARIFA"}
+      </button>
     </form>
   );
 }

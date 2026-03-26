@@ -177,11 +177,17 @@ export default function ClientPortal({ catalogos = [] }: { catalogos?: AtaudDB[]
           <p className="text-slate-300 max-w-lg mx-auto text-sm md:text-base leading-relaxed mb-8 font-light">
             Su servicio será procesado inmediatamente. Un ejecutivo de <strong className="text-amber-500">B&D Funerales</strong> tomará contacto con usted a la brevedad para ratificar los datos y coordinar la logística.
           </p>
-          <div className="px-5 py-3 border border-slate-700/50 bg-slate-900/50 rounded-xl inline-block shadow-inner">
+          <div className="px-5 py-3 border border-slate-700/50 bg-slate-900/50 rounded-xl inline-block shadow-inner mb-8">
             <p className="text-[10px] md:text-xs text-slate-400 font-mono uppercase tracking-widest">
               Seguimiento Interno: <span className="text-white font-bold ml-2">{formData.difuntoRut || formData.difuntoNombre.split(' ')[0] || "BD-001"}</span>
             </p>
           </div>
+          <button 
+            onClick={() => window.location.reload()}
+            className="px-6 py-2.5 bg-amber-500 hover:bg-amber-400 text-slate-900 rounded-xl font-bold text-xs uppercase tracking-widest transition-colors shadow-lg border border-amber-400"
+          >
+            VOLVER AL CATÁLOGO
+          </button>
         </div>
       ) : (
         <>
