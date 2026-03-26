@@ -11,6 +11,13 @@ export default async function Home() {
   return (
     <main className="min-h-screen relative flex flex-col items-center selection:bg-amber-500/30">
       
+      {/* Logo Elegante Superior Izquierdo */}
+      <div className="absolute top-4 left-4 md:top-6 md:left-8 z-30 flex items-center gap-3">
+        <div className="relative rounded-lg overflow-hidden border border-slate-700/50 shadow-[0_5px_15px_rgba(0,0,0,0.5)]">
+          <img src="/Logo.jpg" alt="Logo AT-SIT" className="h-12 md:h-16 lg:h-20 w-auto object-contain bg-slate-900" />
+        </div>
+      </div>
+
       {/* Immersive Background */}
       <div className="fixed inset-0 z-0">
         {/* Background Image: Abstract solemn/elegant dark marble or floral texture */}
