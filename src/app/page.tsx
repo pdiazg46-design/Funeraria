@@ -30,16 +30,11 @@ export default async function Home() {
       <div className="relative z-10 w-full max-w-[95%] xl:max-w-screen-2xl mx-auto px-2 py-4 md:py-6 flex flex-col items-center">
         
         {/* Solemn Header - Compacted */}
-        <div className="text-center mb-4 animate-in">
-          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full border border-amber-500/20 bg-amber-500/5 text-amber-300 text-[9px] sm:text-[10px] font-medium tracking-widest uppercase mb-2">
-            Plataforma Operativa
-          </div>
-          <h1 className="text-3xl md:text-4xl lg:text-5xl font-serif text-white mb-2 tracking-tight drop-shadow-lg">
-            Asistencia <span className="italic text-slate-300">Integral</span> <span className="text-amber-500 font-light tracking-wide whitespace-nowrap text-2xl md:text-3xl lg:text-4xl">- 24 Horas -</span>
+        <div className="text-center mb-6 animate-in">
+          <h1 className="text-3xl md:text-4xl lg:text-5xl font-serif text-white mb-2 tracking-tight drop-shadow-lg flex flex-wrap justify-center items-center gap-x-2 gap-y-1">
+            <span>Asistencia <span className="italic text-slate-300">Integral</span></span>
+            <span className="text-amber-500 font-light tracking-wide whitespace-nowrap text-2xl md:text-3xl lg:text-4xl">- 24 Horas -</span>
           </h1>
-          <p className="text-slate-400 max-w-xl mx-auto text-xs md:text-sm leading-relaxed font-light hidden sm:block">
-            Acompañamiento experto y respetuoso. Gestione logística y servicios sin contratiempos.
-          </p>
         </div>
 
         {/* Formulario / Cotizador */}
