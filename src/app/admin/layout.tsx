@@ -3,9 +3,9 @@ import { LayoutDashboard, Users, Package, FileText } from 'lucide-react';
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
   return (
-    <div className="flex h-screen bg-slate-950 text-slate-200 font-sans selection:bg-amber-500/30" style={{ zoom: 0.85 }}>
-      {/* Sidebar */}
-      <aside className="w-64 bg-slate-900 border-r border-slate-800 flex flex-col hidden md:flex">
+    <div className="flex h-screen w-full overflow-hidden bg-slate-950 text-slate-200 font-sans selection:bg-amber-500/30">
+      {/* Sidebar - Compacted */}
+      <aside className="w-56 bg-slate-900 border-r border-slate-800 flex flex-col hidden md:flex">
         <div className="h-16 flex items-center px-6 border-b border-slate-800 bg-slate-950 text-white">
           <h1 className="text-xl font-serif text-amber-500 tracking-wide">Admin | Funeraria</h1>
         </div>
