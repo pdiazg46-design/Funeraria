@@ -2,7 +2,9 @@ import { prisma } from "@/lib/prisma";
 import { createCatalogo, deleteCatalogo, updateCatalogo } from "./actions";
 import { Plus, Trash2, Edit, X } from "lucide-react";
 import Link from "next/link";
-import { default as ImageUploader } from "@/components/admin/ImageUploader";
+import { getCatalogo } from './actions';
+import ImageUploader from '@/components/admin/ImageUploader';
+import CurrencyInput from '@/components/admin/CurrencyInput';
 
 export const dynamic = 'force-dynamic';
 
@@ -75,11 +77,16 @@ export default async function CatalogoPage({ searchParams }: { searchParams: Pro
                     <label className="block text-[10px] uppercase font-bold tracking-widest text-slate-400 mb-2">Material</label>
                     <input required type="text" name="material" defaultValue={editItem.material} className="w-full border-slate-700 rounded-xl p-3 bg-slate-950 border focus:border-amber-500 text-white focus:outline-none" />
                   </div>
-                  <div>
-                    <label className="block text-[10px] uppercase font-bold tracking-widest text-slate-400 mb-2">Precio Base (CLP)</label>
-                    <input required type="number" name="precioBaseCLP" defaultValue={editItem.precioBaseCLP} className="w-full border-slate-700 rounded-xl p-3 bg-slate-950 border focus:border-amber-500 text-amber-500 font-bold focus:outline-none" />
-                  </div>
-                  <div className="md:col-span-2 flex flex-col justify-end">
+                  <div className="md:col-span-1">
+                <label className="block text-[10px] uppercase font-bold tracking-widest text-slate-400 mb-2">Precio Base ($)</label>
+                <CurrencyInput 
+                  name="precioBaseCLP" 
+                  defaultValue={editItem?.precioBaseCLP || ''}
+                  className="w-full bg-slate-950 border border-slate-700 rounded-xl p-3 text-amber-500 font-bold focus:border-amber-500 focus:outline-none" 
+                  placeholder="1.200.000"
+                />
+              </div>
+                  <div className="md:col-span-1 flex flex-col justify-end">
                     <label className="block text-[10px] uppercase font-bold tracking-widest text-slate-400 mb-2">Fotografía del Producto (Opcional)</label>
                     <ImageUploader defaultValue={editItem.imagenUrl || ""} />
                     <p className="text-[9px] text-slate-500 mt-2 italic leading-tight">💡 Click para subir imagen directa. Se optimizará automáticamente para no saturar tu base de datos.</p>
@@ -108,7 +115,11 @@ export default async function CatalogoPage({ searchParams }: { searchParams: Pro
             </div>
             <div>
               <label className="block text-[10px] uppercase font-bold tracking-widest text-slate-500 mb-2">Precio Base</label>
-              <input required type="number" name="precioBaseCLP" className="w-full border-slate-700 rounded-xl shadow-sm p-3 bg-slate-950 border focus:border-amber-500 text-white focus:outline-none" placeholder="150000" />
+              <CurrencyInput 
+                name="precioBaseCLP" 
+                className="w-full border-slate-700 rounded-xl shadow-sm p-3 bg-slate-950 border focus:border-amber-500 text-white focus:outline-none" 
+                placeholder="150.000" 
+              />
             </div>
             <div className="md:col-span-3">
               <label className="block text-[10px] uppercase font-bold tracking-widest text-slate-500 mb-2">Descripción (Opcional)</label>

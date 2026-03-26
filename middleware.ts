@@ -7,6 +7,7 @@ export default withAuth(
     // ej: if (req.nextUrl.pathname.startsWith("/admin") && req.nextauth.token?.rol !== "SUPER_ADMIN")
   },
   {
+    secret: process.env.NEXTAUTH_SECRET || "ATSIT_SECRET_DEV_KEY_2026_FALLBACK",
     callbacks: {
       authorized: ({ token }) => !!token,
     },

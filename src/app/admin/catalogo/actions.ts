@@ -6,7 +6,8 @@ import { revalidatePath } from "next/cache";
 export async function createCatalogo(data: FormData) {
   const nombre = data.get("nombre") as string;
   const material = data.get("material") as string;
-  const precioBaseCLP = parseFloat(data.get("precioBaseCLP") as string);
+  const precioBaseCLPText = data.get("precioBaseCLP") as string;
+  const precioBaseCLP = parseFloat(precioBaseCLPText.replace(/\./g, ''));
   const imagenUrl = data.get("imagenUrl") as string || null;
   const descripcion = data.get("descripcion") as string || null;
 
@@ -25,7 +26,8 @@ export async function deleteCatalogo(id: number) {
 export async function updateCatalogo(id: number, data: FormData) {
   const nombre = data.get("nombre") as string;
   const material = data.get("material") as string;
-  const precioBaseCLP = parseFloat(data.get("precioBaseCLP") as string);
+  const precioBaseCLPText = data.get("precioBaseCLP") as string;
+  const precioBaseCLP = parseFloat(precioBaseCLPText.replace(/\./g, ''));
   const imagenUrl = data.get("imagenUrl") as string || null;
   const descripcion = data.get("descripcion") as string || null;
 
