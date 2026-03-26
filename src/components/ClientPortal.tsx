@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 import { User, MapPin, Box, ShieldCheck, ChevronRight, Check } from 'lucide-react';
 import { regionesChile, comunasChile } from '../data/geografia';
 
-interface AtaudDB { id: number; nombre: string; material: string; precioBaseCLP: number; imagenUrl: string | null; }
+interface AtaudDB { id: number; nombre: string; material: string; descripcion: string | null; precioBaseCLP: number; imagenUrl: string | null; }
 
 export default function ClientPortal({ catalogos = [] }: { catalogos?: AtaudDB[] }) {
   const [step, setStep] = useState(1);
@@ -264,6 +264,11 @@ export default function ClientPortal({ catalogos = [] }: { catalogos?: AtaudDB[]
                         {ataud.material}
                       </span>
                     </div>
+                    {ataud.descripcion && (
+                      <div className="mt-3 pt-3 border-t border-slate-700/50">
+                        <p className="text-slate-400 text-[10px] leading-relaxed italic line-clamp-3">"{ataud.descripcion}"</p>
+                      </div>
+                    )}
                   </div>
 
                   {formData.ataudSeleccionado === ataud.id && (

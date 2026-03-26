@@ -65,6 +65,7 @@ model CatalogoAtaudes {
   material         String
   precioBaseCLP    Float
   imagenUrl        String?
+  descripcion      String?
   
   servicios        ServicioFunerario[]
 }

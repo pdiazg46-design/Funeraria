@@ -24,41 +24,107 @@ export default async function CatalogoPage({ searchParams }: { searchParams: Pro
         <h2 className="text-3xl font-serif text-white tracking-wide">Catálogo de Ataúdes</h2>
       </div>
 
-      {/* Formulario de creación / Edición */}
-      <div className="bg-slate-900 p-6 rounded-2xl shadow-xl border border-slate-800">
-        <div className="flex justify-between items-center mb-5">
-          <h3 className="text-lg font-serif text-amber-500">
-            {editItem ? "Editar Producto Referencial" : "Agregar Nuevo Producto"}
-          </h3>
-          {editItem && (
-            <Link href="/admin/catalogo" className="text-slate-400 hover:text-white text-xs flex items-center gap-1 font-bold tracking-widest uppercase transition-colors">
+      {/* Formatos condicionales de Creación vs Edición Visual */}
+      {editItem ? (
+        <div className="bg-slate-900 rounded-2xl shadow-xl border border-amber-500/30 overflow-hidden mb-8">
+          <div className="bg-amber-500/10 px-6 py-4 border-b border-amber-500/20 flex justify-between items-center">
+            <h3 className="text-lg font-serif text-amber-500 flex items-center gap-2">
+              <Edit className="w-5 h-5"/> Editando Producto
+            </h3>
+            <Link href="/admin/catalogo" className="text-slate-400 hover:text-white text-xs flex items-center gap-1 font-bold tracking-widest uppercase transition-colors px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 hover:shadow-lg">
               <X className="w-4 h-4" /> Cancelar
             </Link>
-          )}
+          </div>
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-0">
+            {/* Lado Izquierdo: Vista Previa */}
+            <div className="lg:col-span-4 p-6 bg-slate-950 border-r border-slate-800 flex flex-col items-center justify-center">
+              <p className="text-[10px] text-slate-500 uppercase tracking-widest font-bold mb-4">Vista Previa Cliente</p>
+              <div className="w-full max-w-[280px] rounded-xl border-2 border-amber-500 bg-slate-900 overflow-hidden shadow-[0_10px_30px_-10px_rgba(245,158,11,0.2)] relative">
+                <div className="h-32 w-full relative border-b border-slate-800">
+                  <img src={editItem.imagenUrl || "/Plan II.jpeg"} alt={editItem.nombre} className="w-full h-full object-cover opacity-90" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/20 to-transparent"></div>
+                </div>
+                <div className="p-4 text-center">
+                  <h4 className="font-serif text-base text-white mb-1 uppercase tracking-wide">{editItem.nombre || "Nombre Producto"}</h4>
+                  <p className="text-amber-500 font-bold text-xl mb-3 tracking-widest">${(editItem.precioBaseCLP).toLocaleString('es-CL')}</p>
+                  <span className="px-3 py-1 bg-slate-950 border border-slate-700 rounded-md text-[10px] text-slate-300 uppercase tracking-widest font-bold">
+                    {editItem.material || "Material"}
+                  </span>
+                  {editItem.descripcion && (
+                    <div className="mt-4 pt-4 border-t border-slate-800/50">
+                      <p className="text-slate-400 text-xs leading-relaxed italic">"{editItem.descripcion}"</p>
+                    </div>
+                  )}
+                </div>
+              </div>
+            </div>
+            {/* Lado Derecho: Formulario */}
+            <div className="lg:col-span-8 p-6 lg:p-8">
+              <form action={updateCatalogo.bind(null, editItem.id)} className="space-y-5">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+                  <div className="md:col-span-2">
+                    <label className="block text-[10px] uppercase font-bold tracking-widest text-slate-400 mb-2">Nombre del Plan / Urna</label>
+                    <input required type="text" name="nombre" defaultValue={editItem.nombre} className="w-full border-slate-700 rounded-xl p-3 bg-slate-950 border focus:border-amber-500 text-white focus:outline-none" />
+                  </div>
+                  <div className="md:col-span-2">
+                    <label className="block text-[10px] uppercase font-bold tracking-widest text-slate-400 mb-2">Descripción Completa (Opcional)</label>
+                    <textarea name="descripcion" defaultValue={editItem.descripcion || ""} rows={3} className="w-full border-slate-700 rounded-xl p-3 bg-slate-950 border focus:border-amber-500 text-slate-300 focus:outline-none text-sm" placeholder="Ej: Urna tallada a mano con interior de seda..."></textarea>
+                  </div>
+                  <div>
+                    <label className="block text-[10px] uppercase font-bold tracking-widest text-slate-400 mb-2">Material</label>
+                    <input required type="text" name="material" defaultValue={editItem.material} className="w-full border-slate-700 rounded-xl p-3 bg-slate-950 border focus:border-amber-500 text-white focus:outline-none" />
+                  </div>
+                  <div>
+                    <label className="block text-[10px] uppercase font-bold tracking-widest text-slate-400 mb-2">Precio Base (CLP)</label>
+                    <input required type="number" name="precioBaseCLP" defaultValue={editItem.precioBaseCLP} className="w-full border-slate-700 rounded-xl p-3 bg-slate-950 border focus:border-amber-500 text-amber-500 font-bold focus:outline-none" />
+                  </div>
+                  <div className="md:col-span-2">
+                    <label className="block text-[10px] uppercase font-bold tracking-widest text-slate-400 mb-2">Foto / Referencia (Nombre del archivo)</label>
+                    <input type="text" name="imagenUrl" defaultValue={editItem.imagenUrl || ""} className="w-full border-slate-700 rounded-xl p-3 bg-slate-950 border focus:border-amber-500 text-slate-400 focus:outline-none font-mono text-xs" placeholder="Ej: /Plan I.jpeg" />
+                    <p className="text-[10px] text-slate-500 mt-2">💡 Las imágenes fotográficas deben subirse directamente a su servidor (carpeta public). Escriba aquí el nombre exacto de la foto con su extensión (ej: <code>/Plan III.jpeg</code>).</p>
+                  </div>
+                </div>
+                <div className="pt-4 flex justify-end">
+                  <button type="submit" className="bg-amber-500 text-slate-950 px-8 py-3 rounded-xl hover:bg-amber-400 flex items-center gap-2 font-bold uppercase tracking-widest text-[10px] shadow-[0_0_15px_rgba(245,158,11,0.2)]">
+                    <Edit className="w-4 h-4" /> Guardar Cambios
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
         </div>
-        <form action={editItem ? updateCatalogo.bind(null, editItem.id) : createCatalogo} className="grid grid-cols-1 md:grid-cols-5 gap-4 items-end">
-          <div>
-            <label className="block text-[10px] uppercase font-bold tracking-widest text-slate-500 mb-2">Nombre</label>
-            <input required type="text" name="nombre" defaultValue={editItem?.nombre || ""} className="w-full border-slate-700 rounded-xl shadow-sm p-3 bg-slate-950 border focus:border-amber-500 focus:ring-1 focus:ring-amber-500 text-white placeholder-slate-600 focus:outline-none transition-colors" placeholder="EJ. URNA MADERA" />
-          </div>
-          <div>
-            <label className="block text-[10px] uppercase font-bold tracking-widest text-slate-500 mb-2">Material</label>
-            <input required type="text" name="material" defaultValue={editItem?.material || ""} className="w-full border-slate-700 rounded-xl shadow-sm p-3 bg-slate-950 border focus:border-amber-500 focus:ring-1 focus:ring-amber-500 text-white placeholder-slate-600 focus:outline-none transition-colors" placeholder="EJ. ROBLE" />
-          </div>
-          <div>
-            <label className="block text-[10px] uppercase font-bold tracking-widest text-slate-500 mb-2">Precio Base (CLP)</label>
-            <input required type="number" name="precioBaseCLP" defaultValue={editItem?.precioBaseCLP || ""} className="w-full border-slate-700 rounded-xl shadow-sm p-3 bg-slate-950 border focus:border-amber-500 focus:ring-1 focus:ring-amber-500 text-white placeholder-slate-600 focus:outline-none transition-colors" placeholder="150000" />
-          </div>
-          <div>
-            <label className="block text-[10px] uppercase font-bold tracking-widest text-slate-500 mb-2">Foto / Referencia</label>
-            <input type="text" name="imagenUrl" defaultValue={editItem?.imagenUrl || ""} className="w-full border-slate-700 rounded-xl shadow-sm p-3 bg-slate-950 border focus:border-amber-500 focus:ring-1 focus:ring-amber-500 text-slate-300 placeholder-slate-600 focus:outline-none transition-colors font-mono text-xs" placeholder="/Plan I.jpeg" />
-          </div>
-          <button type="submit" className="bg-amber-500 text-slate-950 rounded-xl hover:bg-amber-400 transition-all flex items-center justify-center gap-2 h-12 font-bold uppercase tracking-widest text-[10px] shadow-[0_0_15px_rgba(245,158,11,0.2)]">
-            {editItem ? <Edit className="w-4 h-4" /> : <Plus className="w-4 h-4" />}
-            {editItem ? "Guardar" : "Agregar"}
-          </button>
-        </form>
-      </div>
+      ) : (
+        <div className="bg-slate-900 p-6 rounded-2xl shadow-xl border border-slate-800 mb-8">
+          <h3 className="text-lg font-serif mb-5 text-amber-500">Agregar Nuevo Producto</h3>
+          <form action={createCatalogo} className="grid grid-cols-1 md:grid-cols-5 gap-4 items-start">
+            <div className="md:col-span-2">
+              <label className="block text-[10px] uppercase font-bold tracking-widest text-slate-500 mb-2">Nombre</label>
+              <input required type="text" name="nombre" className="w-full border-slate-700 rounded-xl shadow-sm p-3 bg-slate-950 border focus:border-amber-500 text-white focus:outline-none" placeholder="EJ. URNA MADERA" />
+            </div>
+            <div>
+              <label className="block text-[10px] uppercase font-bold tracking-widest text-slate-500 mb-2">Material</label>
+              <input required type="text" name="material" className="w-full border-slate-700 rounded-xl shadow-sm p-3 bg-slate-950 border focus:border-amber-500 text-white focus:outline-none" placeholder="EJ. ROBLE" />
+            </div>
+            <div>
+              <label className="block text-[10px] uppercase font-bold tracking-widest text-slate-500 mb-2">Precio Base</label>
+              <input required type="number" name="precioBaseCLP" className="w-full border-slate-700 rounded-xl shadow-sm p-3 bg-slate-950 border focus:border-amber-500 text-white focus:outline-none" placeholder="150000" />
+            </div>
+            <div className="md:col-span-3">
+              <label className="block text-[10px] uppercase font-bold tracking-widest text-slate-500 mb-2">Descripción (Opcional)</label>
+              <input type="text" name="descripcion" className="w-full border-slate-700 rounded-xl p-3 bg-slate-950 border focus:border-amber-500 text-slate-300 focus:outline-none" placeholder="Descripción breve..." />
+            </div>
+            <div className="md:col-span-2">
+              <label className="block text-[10px] uppercase font-bold tracking-widest text-slate-500 mb-2">Foto / Ref</label>
+              <input type="text" name="imagenUrl" className="w-full border-slate-700 rounded-xl p-3 bg-slate-950 border focus:border-amber-500 text-slate-400 focus:outline-none font-mono text-xs" placeholder="/Plan I.jpeg" />
+            </div>
+            <div className="md:col-span-5 flex justify-end">
+              <button type="submit" className="bg-amber-500 text-slate-950 rounded-xl hover:bg-amber-400 px-8 py-3 flex items-center justify-center gap-2 font-bold uppercase tracking-widest text-[10px] shadow-[0_0_15px_rgba(245,158,11,0.2)]">
+                <Plus className="w-4 h-4" /> Agregar Producto
+              </button>
+            </div>
+          </form>
+        </div>
+      )}
 
       {/* Listado */}
       <div className="bg-slate-900/50 rounded-2xl shadow-xl border border-slate-800 overflow-hidden backdrop-blur-sm">
