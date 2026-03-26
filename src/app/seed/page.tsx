@@ -8,8 +8,8 @@ export default async function SeedPage() {
   
   await prisma.usuario.upsert({
     where: { email: 'pdiazg46@gmail.com' },
-    update: { password: hash, rol: 'SUPER_ADMIN' },
-    create: { email: 'pdiazg46@gmail.com', password: hash, nombre: 'Pablo Diaz', rol: 'SUPER_ADMIN' },
+    update: { password: hash, rol: 'SUPER_ADMIN', nombre: 'Patricio Díaz' },
+    create: { email: 'pdiazg46@gmail.com', password: hash, nombre: 'Patricio Díaz', rol: 'SUPER_ADMIN' },
   });
   
   return (
