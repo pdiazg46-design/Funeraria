@@ -1,0 +1,147 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model Usuario {
+  id                   String              @id @default(uuid())
+  email                String              @unique
+  nombre               String?
+  rol                  RolUsuario          @default(CLIENTE)
+  createdAt            DateTime            @default(now())
+  
+  // Relaciones
+  serviciosSolicitados ServicioFunerario[] @relation("ClienteServicio")
+}
+
+enum RolUsuario {
+  SUPER_ADMIN
+  ADMINISTRADOR
+  PROVEEDOR
+  CLIENTE
+}
+
+model Region {
+  id        Int      @id @default(autoincrement())
+  nombre    String
+  comunas   Comuna[]
+}
+
+model Comuna {
+  id                  Int      @id @default(autoincrement())
+  nombre              String
+  regionId            Int
+  region              Region   @relation(fields: [regionId], references: [id])
+  
+  // Nodos para Matriz Distancias (Dijkstra)
+  rutasOrigen         MatrizDistancia[] @relation("Origen")
+  rutasDestino        MatrizDistancia[] @relation("Destino")
+
+  // Servicios vinculados geográficamente
+  serviciosOrigen     ServicioFunerario[] @relation("OrigenServicio")
+  serviciosDestino1   ServicioFunerario[] @relation("Destino1Servicio")
+  serviciosDestino2   ServicioFunerario[] @relation("Destino2Servicio")
+}
+
+// Grafo de adyacencia estático
+model MatrizDistancia {
+  id               Int      @id @default(autoincrement())
+  origenComunaId   Int
+  destinoComunaId  Int
+  kilometros       Float
+  
+  origen           Comuna   @relation("Origen", fields: [origenComunaId], references: [id])
+  destino          Comuna   @relation("Destino", fields: [destinoComunaId], references: [id])
+
+  @@unique([origenComunaId, destinoComunaId])
+}
+
+model CatalogoAtaudes {
+  id               Int      @id @default(autoincrement())
+  nombre           String
+  material         String
+  precioBaseCLP    Float
+  imagenUrl        String?
+  
+  servicios        ServicioFunerario[]
+}
+
+model Proveedor {
+  id               String   @id @default(uuid())
+  nombreEmpresa    String
+  rutEmpresa       String   @unique
+  contacto         String
+  comunaBaseId     Int      // Centro de operaciones
+  
+  serviciosAsignados ServicioFunerario[]
+}
+
+model ServicioFunerario {
+  id                     String   @id @default(uuid())
+  createdAt              DateTime @default(now())
+  estado                 EstadoServicio @default(NUEVO_INGRESO)
+  
+  // 1. Cliente
+  clienteId              String
+  cliente                Usuario  @relation("ClienteServicio", fields: [clienteId], references: [id])
+  telefonoContacto       String
+
+  // 2. Fallecido
+  nombreDifunto          String
+  rutDifunto             String?
+  previsionLegal         TipoPrevision
+  afpNombre              String?
+  
+  // 3. Ubicaciones Geográficas
+  // Origen (Fallecimiento)
+  origenComunaId         Int
+  origen                 Comuna   @relation("OrigenServicio", fields: [origenComunaId], references: [id])
+  origenCalle            String
+  origenNumero           String
+  origenVilla            String?
+  
+  // Destino 1 (Velatorio)
+  destino1ComunaId       Int
+  destino1               Comuna   @relation("Destino1Servicio", fields: [destino1ComunaId], references: [id])
+  destino1Calle          String
+  destino1Numero         String
+  destino1Villa          String?
+  
+  // Destino 2 (Cementerio/Crematorio)
+  destino2ComunaId       Int?
+  destino2               Comuna?  @relation("Destino2Servicio", fields: [destino2ComunaId], references: [id])
+  destino2Calle          String?
+  destino2Numero         String?
+  destino2Villa          String?
+
+  // 4. Catálogo
+  ataudId                Int?
+  ataud                  CatalogoAtaudes? @relation(fields: [ataudId], references: [id])
+
+  // 5. Motor de Cotización (Control de Costos Internos)
+  aplicarTarifaPlanaRM   Boolean  @default(false)
+  kmCalculadosAlgoritmo  Float    @default(0)
+  kmAdicionalRural       Float    @default(0) // Editado desde panel admin
+  costoTotalTrasladoCLP  Float    @default(0) 
+
+  // Proveedor
+  proveedorId            String?
+  proveedor              Proveedor? @relation(fields: [proveedorId], references: [id])
+}
+
+enum EstadoServicio {
+  NUEVO_INGRESO
+  ASIGNANDO_PROVEEDOR
+  EN_CURSO
+  FINALIZADO
+  CANCELADO
+}
+
+enum TipoPrevision {
+  IPS
+  AFP
+  NINGUNA
+}

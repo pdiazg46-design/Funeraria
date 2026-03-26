@@ -1,65 +1,44 @@
-import Image from "next/image";
+import ClientPortal from '@/components/ClientPortal';
 
 export default function Home() {
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
+    <main className="min-h-screen relative flex flex-col items-center selection:bg-amber-500/30">
+      
+      {/* Immersive Background */}
+      <div className="fixed inset-0 z-0">
+        {/* Background Image: Abstract solemn/elegant dark marble or floral texture */}
+        <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1507608616759-54f48f0af0ee?q=80&w=2000&auto=format&fit=crop')] bg-cover bg-center opacity-5"></div>
+        {/* Dark elegant gradients */}
+        <div className="absolute inset-0 bg-gradient-to-b from-slate-950/80 via-slate-950/95 to-slate-950"></div>
+        <div className="absolute top-[-20%] right-[-10%] w-[50%] h-[50%] bg-amber-900/10 blur-[120px] rounded-full pointer-events-none"></div>
+      </div>
+
+      <div className="relative z-10 w-full max-w-[95%] xl:max-w-screen-2xl mx-auto px-2 py-4 md:py-6 flex flex-col items-center">
+        
+        {/* Solemn Header - Compacted */}
+        <div className="text-center mb-4 animate-in">
+          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full border border-amber-500/20 bg-amber-500/5 text-amber-300 text-[9px] sm:text-[10px] font-medium tracking-widest uppercase mb-2">
+            Plataforma Operativa
+          </div>
+          <h1 className="text-3xl md:text-4xl lg:text-5xl font-serif text-white mb-2 tracking-tight drop-shadow-lg">
+            Asistencia <span className="italic text-slate-300">Integral</span>
           </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
+          <p className="text-slate-400 max-w-xl mx-auto text-xs md:text-sm leading-relaxed font-light hidden sm:block">
+            Acompañamiento experto y respetuoso. Gestione logística y servicios sin contratiempos.
           </p>
         </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
+
+        {/* Formulario / Cotizador */}
+        <div className="w-full">
+          <ClientPortal />
         </div>
-      </main>
-    </div>
+
+      </div>
+      
+      {/* Footer minimalista */}
+      <footer className="relative z-10 pb-8 pt-12 text-slate-600 text-xs text-center font-light">
+        © {new Date().getFullYear()} Plataforma de Corretaje Funerario. Sistema encriptado de punta a punta.
+      </footer>
+    </main>
   );
 }
