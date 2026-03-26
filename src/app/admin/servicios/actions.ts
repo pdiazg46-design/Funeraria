@@ -23,7 +23,15 @@ export async function actualizarCostos(servicioId: string, formData: FormData) {
   if (!servicio) return;
 
   const VALOR_POR_KM = 1000; // Asumido provisoriamente
-  const costoTotal = (servicio.kmCalculadosAlgoritmo + kmAdicionalRural) * VALOR_POR_KM;
+  let costoTotal = 0;
+
+  if (servicio.aplicarTarifaPlanaRM) {
+    const config = await prisma.configuracionGlobal.findFirst();
+    const tarifaPlana = config?.tarifaPlanaRM_CLP || 50000;
+    costoTotal = tarifaPlana + (kmAdicionalRural * VALOR_POR_KM);
+  } else {
+    costoTotal = (servicio.kmCalculadosAlgoritmo + kmAdicionalRural) * VALOR_POR_KM;
+  }
 
   await prisma.servicioFunerario.update({
     where: { id: servicioId },
@@ -35,4 +43,25 @@ export async function actualizarCostos(servicioId: string, formData: FormData) {
 
   revalidatePath(`/admin/servicios/${servicioId}`);
   revalidatePath("/admin/servicios");
+}
+
+export async function actualizarTarifaPlanaGlobal(formData: FormData) {
+  const nuevaTarifa = parseFloat(formData.get("tarifaPlanaRM_CLP") as string);
+  if (!nuevaTarifa) return;
+
+  let config = await prisma.configuracionGlobal.findFirst();
+  if (config) {
+    await prisma.configuracionGlobal.update({
+      where: { id: config.id },
+      data: { tarifaPlanaRM_CLP: nuevaTarifa }
+    });
+  } else {
+    await prisma.configuracionGlobal.create({
+      data: { tarifaPlanaRM_CLP: nuevaTarifa }
+    });
+  }
+
+  // Refrescar todos los servicios para que recálculos de UI reflejen el nuevo precio global
+  revalidatePath("/admin/servicios");
+  revalidatePath(`/admin/servicios/[id]`, 'page');
 }

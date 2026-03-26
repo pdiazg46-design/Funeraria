@@ -26,6 +26,12 @@ enum RolUsuario {
   CLIENTE
 }
 
+model ConfiguracionGlobal {
+  id                  Int      @id @default(autoincrement())
+  tarifaPlanaRM_CLP   Float    @default(50000)
+  updatedAt           DateTime @updatedAt
+}
+
 model Region {
   id        Int      @id @default(autoincrement())
   nombre    String

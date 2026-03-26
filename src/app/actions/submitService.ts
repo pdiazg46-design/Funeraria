@@ -53,9 +53,23 @@ export async function submitServiceForm(formData: any) {
 
         ataudId: formData.ataudSeleccionado || null,
         
-        estado: "NUEVO_INGRESO"
+        estado: "NUEVO_INGRESO",
+        aplicarTarifaPlanaRM: 
+          formData.origenRegion === '13' && 
+          formData.destino1Region === '13' && 
+          (!formData.destino2Region || formData.destino2Region === '13')
       }
     });
+
+    // Calcular el costo inicial automáticamente si es RM
+    if (servicio.aplicarTarifaPlanaRM) {
+      const config = await prisma.configuracionGlobal.findFirst();
+      const tarifaPlana = config?.tarifaPlanaRM_CLP || 50000;
+      await prisma.servicioFunerario.update({
+        where: { id: servicio.id },
+        data: { costoTotalTrasladoCLP: tarifaPlana }
+      });
+    }
 
     // Forzar actualización del panel administrativo
     revalidatePath("/admin");
