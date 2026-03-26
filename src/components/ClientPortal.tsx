@@ -1,8 +1,9 @@
 "use client";
 
 import React, { useState } from 'react';
-import { User, MapPin, Box, ShieldCheck, ChevronRight, Check } from 'lucide-react';
+import { User, MapPin, Box, ShieldCheck, ChevronRight, Check, Loader2 } from 'lucide-react';
 import { regionesChile, comunasChile } from '../data/geografia';
+import { submitServiceForm } from '@/app/actions/submitService';
 
 interface AtaudDB { id: number; nombre: string; material: string; descripcion: string | null; precioBaseCLP: number; imagenUrl: string | null; }
 
@@ -19,6 +20,8 @@ export default function ClientPortal({ catalogos = [] }: { catalogos?: AtaudDB[]
     destino2Calle: '', destino2Numero: '', destino2Villa: '',
     ataudSeleccionado: null as number | null
   });
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isSubmitted, setIsSubmitted] = useState(false);
 
   const getImagenParaAtaud = (nombre: string) => {
     const n = nombre.toUpperCase();
@@ -31,6 +34,23 @@ export default function ClientPortal({ catalogos = [] }: { catalogos?: AtaudDB[]
 
   const handleNext = () => setStep(prev => prev + 1);
   const handleBack = () => setStep(prev => Math.max(1, prev - 1));
+
+  const handleSubmit = async () => {
+    setIsSubmitting(true);
+    try {
+      const res = await submitServiceForm(formData);
+      if (res.success) {
+        setIsSubmitted(true);
+      } else {
+        alert("Ocurrió un error: " + res.error);
+      }
+    } catch (error) {
+      console.error(error);
+      alert("Error de conexión al enviar la solicitud.");
+    } finally {
+        setIsSubmitting(false);
+    }
+  };
 
   const handleRutChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     let value = e.target.value.replace(/[^0-9kK]/g, '').toUpperCase();
@@ -68,7 +88,24 @@ export default function ClientPortal({ catalogos = [] }: { catalogos?: AtaudDB[]
       
       <div className="absolute top-0 right-0 w-[300px] h-[300px] bg-amber-500/5 blur-[80px] rounded-full pointer-events-none"></div>
 
-      {/* Stepper Superior Ultra-Compacto */}
+      {isSubmitted ? (
+        <div className="flex flex-col items-center justify-center p-8 md:p-12 text-center animate-in h-full my-auto">
+          <div className="w-20 h-20 md:w-24 md:h-24 bg-amber-500/10 rounded-full flex items-center justify-center mb-6 border border-amber-500/30 shadow-[0_0_30px_rgba(245,158,11,0.2)]">
+            <Check className="w-10 h-10 md:w-12 md:h-12 text-amber-500" />
+          </div>
+          <h2 className="text-2xl md:text-4xl font-serif text-white mb-4 tracking-wide">Solicitud Recibida</h2>
+          <p className="text-slate-300 max-w-lg mx-auto text-sm md:text-base leading-relaxed mb-8 font-light">
+            Su servicio será procesado inmediatamente. Un ejecutivo de <strong className="text-amber-500">B&D Funerales</strong> tomará contacto con usted a la brevedad para ratificar los datos y coordinar la logística.
+          </p>
+          <div className="px-5 py-3 border border-slate-700/50 bg-slate-900/50 rounded-xl inline-block shadow-inner">
+            <p className="text-[10px] md:text-xs text-slate-400 font-mono uppercase tracking-widest">
+              Seguimiento Interno: <span className="text-white font-bold ml-2">{formData.difuntoRut || formData.difuntoNombre.split(' ')[0] || "BD-001"}</span>
+            </p>
+          </div>
+        </div>
+      ) : (
+        <>
+          {/* Stepper Superior Ultra-Compacto */}
       <div className="flex justify-between items-center mb-4 relative z-10 w-full max-w-4xl mx-auto">
         <div className="absolute left-10 right-10 top-1/2 h-[2px] bg-slate-800/80 -z-10 -translate-y-1/2 hidden sm:block"></div>
         {[
@@ -293,16 +330,25 @@ export default function ClientPortal({ catalogos = [] }: { catalogos?: AtaudDB[]
         </button>
         
         <button 
-          onClick={step < 4 ? handleNext : () => alert('Confirmado al Servidor')} 
+          onClick={step < 4 ? handleNext : handleSubmit} 
+          disabled={isSubmitting}
           className={`px-6 py-2 md:px-8 md:py-3 rounded-xl font-bold text-[10px] md:text-xs uppercase tracking-widest transition-all duration-300 shadow-xl flex items-center gap-2
             ${step === 4 
               ? 'bg-amber-500 hover:bg-amber-400 text-slate-950 shadow-amber-500/30' 
-              : 'bg-white hover:bg-slate-200 text-slate-900 shadow-white/10'}`}
+              : 'bg-white hover:bg-slate-200 text-slate-900 shadow-white/10'}
+            ${isSubmitting ? 'opacity-70 cursor-not-allowed' : ''}`}
         >
-          {step < 4 ? 'CONTINUAR' : 'PROCESAR SOLICITUD'}
-          {step < 4 && <ChevronRight className="w-4 h-4 opacity-80" />}
+          {isSubmitting ? (
+            <><Loader2 className="w-4 h-4 animate-spin" /> PROCESANDO...</>
+          ) : step < 4 ? (
+            <>'CONTINUAR' <ChevronRight className="w-4 h-4 opacity-80" /></>
+          ) : (
+            'PROCESAR SOLICITUD'
+          )}
         </button>
       </div>
+      </>
+      )}
 
     </div>
   );

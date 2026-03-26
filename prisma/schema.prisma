@@ -9,6 +9,7 @@ datasource db {
 model Usuario {
   id                   String              @id @default(uuid())
   email                String              @unique
+  password             String?             // Hashed with bcrypt for admin/provider login
   nombre               String?
   rol                  RolUsuario          @default(CLIENTE)
   createdAt            DateTime            @default(now())
