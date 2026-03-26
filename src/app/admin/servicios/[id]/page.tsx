@@ -35,8 +35,8 @@ export default async function ServicioDetallePage({ params }: { params: Promise<
         </Link>
         <h2 className="text-3xl font-serif text-white tracking-wide">Detalle de Operación</h2>
         <span className={`px-4 py-1.5 rounded-md text-[10px] uppercase font-bold tracking-widest ml-auto border
-          ${servicio.estado === 'NUEVO' ? 'bg-blue-500/10 text-blue-400 border-blue-500/30' : 
-          servicio.estado === 'EN_PROCESO' ? 'bg-amber-500/10 text-amber-400 border-amber-500/30' : 
+          ${servicio.estado === 'NUEVO_INGRESO' ? 'bg-blue-500/10 text-blue-400 border-blue-500/30' : 
+          servicio.estado === 'EN_CURSO' ? 'bg-amber-500/10 text-amber-400 border-amber-500/30' : 
           servicio.estado === 'FINALIZADO' ? 'bg-emerald-500/10 text-emerald-400 border-emerald-500/30' : 
           'bg-slate-800 text-slate-400 border-slate-700'}`}>
           {servicio.estado}
