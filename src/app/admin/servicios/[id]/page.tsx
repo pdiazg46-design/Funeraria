@@ -55,9 +55,16 @@ export default async function ServicioDetallePage({ params }: { params: Promise<
             <p><span className="font-bold text-[10px] uppercase tracking-widest text-slate-500 block mb-1">RUT</span> <span className="text-amber-500 font-mono text-base">{servicio.rutDifunto || "No indicado"}</span></p>
             <p><span className="font-bold text-[10px] uppercase tracking-widest text-slate-500 block mb-1">Previsión Institucional</span> <span className="text-slate-200 text-base uppercase tracking-wider">{servicio.previsionLegal} {servicio.afpNombre ? `(${servicio.afpNombre})` : ''}</span></p>
             {servicio.ataud && (
-              <div className="mt-4 p-4 bg-slate-950 rounded-xl border border-slate-800">
-                <span className="font-bold text-[10px] uppercase tracking-widest text-slate-500 block mb-1">Urna Contratada</span> 
-                <span className="text-amber-400 font-bold uppercase tracking-wider">{servicio.ataud.nombre}</span>
+              <div className="mt-4 p-4 bg-slate-950 rounded-xl border border-slate-800 flex justify-between items-center">
+                <div>
+                  <span className="font-bold text-[10px] uppercase tracking-widest text-slate-500 block mb-1">Urna Contratada</span> 
+                  <span className="text-amber-400 font-bold uppercase tracking-wider lg:text-lg block">{servicio.ataud.nombre}</span>
+                  <span className="text-[10px] text-slate-400 uppercase tracking-widest font-mono mt-1 block">Material: {servicio.ataud.material}</span>
+                </div>
+                <div className="text-right">
+                  <span className="font-bold text-[10px] uppercase tracking-widest text-slate-500 block mb-1">Valor Plataforma</span>
+                  <span className="text-emerald-400 font-bold tracking-wider text-xl">${servicio.ataud.precioBaseCLP.toLocaleString('es-CL')}</span>
+                </div>
               </div>
             )}
           </div>
