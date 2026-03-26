@@ -4,6 +4,7 @@ import { ArrowLeft, MapPin, Truck, DollarSign, User } from "lucide-react";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import TarifaPlanaForm from "@/components/admin/TarifaPlanaForm";
+import CostoOperadorForm from "@/components/admin/CostoOperadorForm";
 
 export const dynamic = 'force-dynamic';
 
@@ -126,7 +127,7 @@ export default async function ServicioDetallePage({ params }: { params: Promise<
             <div>
               <label className="block text-[10px] uppercase font-bold tracking-widest text-slate-500 mb-2">Ajuste Manual: Km Adicionales / Rurales</label>
               <div className="flex gap-2">
-                <input type="number" step="0.1" name="kmAdicionalRural" defaultValue={servicio.kmAdicionalRural} className="w-full border-slate-700 rounded-xl shadow-sm p-3 bg-slate-950 border focus:border-amber-500 focus:ring-1 focus:ring-amber-500 text-white font-mono focus:outline-none transition-colors" />
+                <input type="number" step="0.1" name="kmAdicionalRural" defaultValue={servicio.kmAdicionalRural} onFocus={e => e.target.select()} className="w-full border-slate-700 rounded-xl shadow-sm p-3 bg-slate-950 border focus:border-amber-500 focus:ring-1 focus:ring-amber-500 text-white font-mono focus:outline-none transition-colors" />
                 <button type="submit" className="bg-slate-800 text-slate-300 px-6 rounded-xl hover:bg-slate-700 hover:text-white transition-colors text-[10px] font-bold uppercase tracking-widest border border-slate-700">Calcular</button>
               </div>
             </div>
@@ -188,20 +189,14 @@ export default async function ServicioDetallePage({ params }: { params: Promise<
         {servicio.proveedorId && (
           <div className="bg-slate-900 p-6 rounded-2xl shadow-xl border border-slate-800 h-fit">
             <h3 className="text-lg font-serif mb-5 text-emerald-400 flex items-center gap-2"><DollarSign className="w-5 h-5"/> Costo a Pagar a Operador</h3>
-            <form action={costoOpAction} className="space-y-4">
+            <div className="space-y-4">
               <label className="block text-[10px] uppercase font-bold tracking-widest text-slate-500">
                 Monto Acordado con <strong className="text-emerald-400 block mt-1 text-sm">{servicio.proveedor?.nombreEmpresa}</strong>
               </label>
               <p className="text-[10px] text-slate-400 italic mb-2">Este valor es de uso interno para finanzas.</p>
               
-              <div className="flex gap-2 items-center">
-                <div className="relative w-full">
-                  <span className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-500 font-bold">$</span>
-                  <input type="number" name="costoOperadorCLP" defaultValue={servicio.costoOperadorCLP || 0} className="w-full border-slate-700 rounded-xl shadow-sm py-2 pl-7 pr-3 bg-slate-950 border focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 text-emerald-400 font-mono font-bold focus:outline-none transition-colors" />
-                </div>
-                <button type="submit" className="bg-slate-800 text-slate-300 px-6 py-2 rounded-xl hover:bg-emerald-500 hover:text-slate-950 hover:border-emerald-500 transition-colors text-[10px] font-bold uppercase tracking-widest border border-slate-700 shrink-0">Fijar Tarifa</button>
-              </div>
-            </form>
+              <CostoOperadorForm defaultTarifa={servicio.costoOperadorCLP || 0} servicioId={id} />
+            </div>
             </div>
           )}
         </div>

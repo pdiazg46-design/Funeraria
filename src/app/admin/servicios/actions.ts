@@ -61,6 +61,12 @@ export async function actualizarTarifaPlanaGlobal(servicioId: string, formData: 
     });
   }
 
+  // Propagar el nuevo valor a todos los servicios RM activos
+  await prisma.servicioFunerario.updateMany({
+    where: { aplicarTarifaPlanaRM: true },
+    data: { costoTotalTrasladoCLP: nuevaTarifa }
+  });
+
   // Refrescar todos los servicios para que recálculos de UI reflejen el nuevo precio global
   revalidatePath("/admin/servicios");
   revalidatePath(`/admin/servicios/${servicioId}`);

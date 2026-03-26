@@ -37,6 +37,7 @@ export default function TarifaPlanaForm({ defaultTarifa, servicioId }: { default
           name="tarifaPlanaRM_CLP" 
           value={val}
           onChange={handleChange}
+          onFocus={(e) => e.target.select()}
           className="w-full border-amber-500/30 rounded-lg shadow-sm py-1.5 pl-7 pr-2 bg-amber-500/10 border focus:border-amber-400 focus:ring-1 focus:ring-amber-400 text-amber-400 font-bold font-mono focus:outline-none transition-colors text-sm" 
         />
       </div>
