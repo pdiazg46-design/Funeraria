@@ -95,7 +95,7 @@ export default async function UsuariosPage() {
                    </span>
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-right text-sm">
-                  {u.rol !== 'SUPER_ADMIN' && (
+                  {u.email !== session?.user?.email && (
                     <form action={action}>
                       <button type="submit" className="text-slate-500 hover:text-red-400 p-2 rounded-lg hover:bg-slate-800 transition-colors" title="Revocar Acceso">
                         <Trash2 className="w-4 h-4" />
