@@ -36,8 +36,9 @@ export default function Home() {
       </div>
       
       {/* Footer minimalista */}
-      <footer className="relative z-10 pb-8 pt-12 text-slate-600 text-xs text-center font-light">
-        © {new Date().getFullYear()} Plataforma de Corretaje Funerario. Sistema encriptado de punta a punta.
+      <footer className="relative z-10 pb-8 pt-12 flex flex-col items-center gap-3 text-slate-600 text-[10px] md:text-xs text-center font-light">
+        <p>© {new Date().getFullYear()} Plataforma de Corretaje Funerario. Sistema encriptado de punta a punta.</p>
+        <a href="/admin" className="text-slate-700 hover:text-amber-500 transition-colors uppercase tracking-widest font-bold">Acceso Administración</a>
       </footer>
     </main>
   );

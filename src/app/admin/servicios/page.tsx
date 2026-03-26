@@ -16,51 +16,55 @@ export default async function ServiciosPage() {
   });
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-8">
       <div className="flex justify-between items-center">
-        <h2 className="text-2xl font-bold text-gray-900">Gestión de Servicios</h2>
+        <h2 className="text-3xl font-serif text-white tracking-wide">Gestión de Servicios</h2>
       </div>
 
-      <div className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+      <div className="bg-slate-900/50 rounded-2xl shadow-xl border border-slate-800 overflow-hidden backdrop-blur-sm">
         <div className="overflow-x-auto">
-          <table className="min-w-full divide-y divide-gray-200">
-            <thead className="bg-gray-50">
+          <table className="min-w-full divide-y divide-slate-800 flex-1">
+            <thead className="bg-slate-900/80">
               <tr>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Fecha</th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Cliente</th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Origen - Destino</th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Estado</th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Proveedor</th>
-                <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Detalle</th>
+                <th className="px-6 py-4 text-left text-[10px] font-bold text-slate-500 uppercase tracking-widest">Fecha</th>
+                <th className="px-6 py-4 text-left text-[10px] font-bold text-slate-500 uppercase tracking-widest">Cliente</th>
+                <th className="px-6 py-4 text-left text-[10px] font-bold text-slate-500 uppercase tracking-widest">Origen - Destino</th>
+                <th className="px-6 py-4 text-left text-[10px] font-bold text-slate-500 uppercase tracking-widest">Estado</th>
+                <th className="px-6 py-4 text-left text-[10px] font-bold text-slate-500 uppercase tracking-widest">Proveedor</th>
+                <th className="px-6 py-4 text-right text-[10px] font-bold text-slate-500 uppercase tracking-widest">Detalle</th>
               </tr>
             </thead>
-            <tbody className="bg-white divide-y divide-gray-200">
+            <tbody className="divide-y divide-slate-800/60">
               {servicios.length === 0 && (
                 <tr>
-                  <td colSpan={6} className="px-6 py-8 text-center text-sm text-gray-500">No hay servicios registrados.</td>
+                  <td colSpan={6} className="px-6 py-12 text-center text-sm text-slate-500 italic">No hay servicios registrados.</td>
                 </tr>
               )}
               {servicios.map((s: any) => (
-                <tr key={s.id} className="hover:bg-gray-50 transition-colors">
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                <tr key={s.id} className="hover:bg-slate-800/40 transition-colors">
+                  <td className="px-6 py-5 whitespace-nowrap text-sm text-slate-400 font-mono">
                     {s.createdAt.toLocaleDateString("es-CL")}
                   </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                  <td className="px-6 py-5 whitespace-nowrap text-sm font-bold text-slate-200 uppercase tracking-wide">
                     {s.cliente?.nombre || s.cliente?.email || 'N/A'}
                   </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                  <td className="px-6 py-5 whitespace-nowrap text-sm text-amber-500 uppercase tracking-wider font-medium">
                     {s.origen?.nombre} &rarr; {s.destino1?.nombre}
                   </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                    <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-100 text-blue-800">
+                  <td className="px-6 py-5 whitespace-nowrap text-sm text-slate-400">
+                    <span className={`px-3 py-1 inline-flex text-[10px] uppercase tracking-widest font-bold rounded-md border 
+                      ${s.estado === 'NUEVO' ? 'bg-blue-500/10 text-blue-400 border-blue-500/30' : 
+                      s.estado === 'EN_PROCESO' ? 'bg-amber-500/10 text-amber-400 border-amber-500/30' : 
+                      s.estado === 'FINALIZADO' ? 'bg-emerald-500/10 text-emerald-400 border-emerald-500/30' : 
+                      'bg-slate-800 text-slate-400 border-slate-700'}`}>
                       {s.estado}
                     </span>
                   </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                    {s.proveedor?.nombreEmpresa || <span className="text-red-500 text-xs font-medium">Sin asignar</span>}
+                  <td className="px-6 py-5 whitespace-nowrap text-sm font-bold text-slate-300 uppercase tracking-wider">
+                    {s.proveedor?.nombreEmpresa || <span className="text-red-400/80 text-[10px] uppercase tracking-widest border border-red-500/20 bg-red-500/10 px-2 py-1 rounded-md">Sin Asignar</span>}
                   </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                    <Link href={`/admin/servicios/${s.id}`} className="text-gray-600 hover:text-gray-900 p-2 inline-block">
+                  <td className="px-6 py-5 whitespace-nowrap text-right text-sm">
+                    <Link href={`/admin/servicios/${s.id}`} className="text-slate-500 hover:text-amber-400 p-2 inline-block rounded-lg hover:bg-slate-800 transition-colors">
                       <Eye className="w-5 h-5" />
                     </Link>
                   </td>

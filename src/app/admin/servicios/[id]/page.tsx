@@ -28,104 +28,116 @@ export default async function ServicioDetallePage({ params }: { params: Promise<
   const costAction = actualizarCostos.bind(null, id);
 
   return (
-    <div className="space-y-6 max-w-4xl">
-      <div className="flex items-center gap-4">
-        <Link href="/admin/servicios" className="text-gray-500 hover:text-gray-900">
+    <div className="space-y-8 max-w-5xl mx-auto">
+      <div className="flex items-center gap-4 border-b border-slate-800 pb-4">
+        <Link href="/admin/servicios" className="text-slate-500 hover:text-amber-400 transition-colors p-2 hover:bg-slate-800 rounded-lg">
           <ArrowLeft className="w-6 h-6" />
         </Link>
-        <h2 className="text-2xl font-bold text-gray-900">Detalle de Servicio</h2>
-        <span className="px-3 py-1 rounded-full text-xs font-semibold bg-blue-100 text-blue-800 ml-auto">
+        <h2 className="text-3xl font-serif text-white tracking-wide">Detalle de Operación</h2>
+        <span className={`px-4 py-1.5 rounded-md text-[10px] uppercase font-bold tracking-widest ml-auto border
+          ${servicio.estado === 'NUEVO' ? 'bg-blue-500/10 text-blue-400 border-blue-500/30' : 
+          servicio.estado === 'EN_PROCESO' ? 'bg-amber-500/10 text-amber-400 border-amber-500/30' : 
+          servicio.estado === 'FINALIZADO' ? 'bg-emerald-500/10 text-emerald-400 border-emerald-500/30' : 
+          'bg-slate-800 text-slate-400 border-slate-700'}`}>
           {servicio.estado}
         </span>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 text-slate-300">
         {/* Info Cliente & Difunto */}
-        <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-200">
-          <h3 className="text-lg font-medium mb-4 text-gray-800 flex items-center gap-2"><User className="w-5 h-5"/> Información General</h3>
-          <div className="space-y-3 text-sm">
-            <p><span className="font-semibold text-gray-600">Cliente:</span> {servicio.cliente?.nombre || servicio.cliente?.email}</p>
-            <p><span className="font-semibold text-gray-600">Teléfono:</span> {servicio.telefonoContacto}</p>
-            <hr className="my-2 border-gray-100" />
-            <p><span className="font-semibold text-gray-600">Fallecido:</span> {servicio.nombreDifunto}</p>
-            <p><span className="font-semibold text-gray-600">RUT:</span> {servicio.rutDifunto || "No indicado"}</p>
-            <p><span className="font-semibold text-gray-600">Previsión:</span> {servicio.previsionLegal} {servicio.afpNombre ? `(${servicio.afpNombre})` : ''}</p>
+        <div className="bg-slate-900 p-6 rounded-2xl shadow-xl border border-slate-800">
+          <h3 className="text-lg font-serif mb-5 text-amber-500 flex items-center gap-2"><User className="w-5 h-5"/> Información General</h3>
+          <div className="space-y-4 text-sm">
+            <p><span className="font-bold text-[10px] uppercase tracking-widest text-slate-500 block mb-1">Cliente Solicitante</span> <span className="text-slate-200 text-base">{servicio.cliente?.nombre || servicio.cliente?.email}</span></p>
+            <p><span className="font-bold text-[10px] uppercase tracking-widest text-slate-500 block mb-1">Teléfono Contacto</span> <span className="text-slate-200 text-base">{servicio.telefonoContacto}</span></p>
+            <hr className="my-4 border-slate-800" />
+            <p><span className="font-bold text-[10px] uppercase tracking-widest text-slate-500 block mb-1">Nombre Fallecido</span> <span className="text-slate-200 text-base uppercase tracking-wide">{servicio.nombreDifunto}</span></p>
+            <p><span className="font-bold text-[10px] uppercase tracking-widest text-slate-500 block mb-1">RUT</span> <span className="text-amber-500 font-mono text-base">{servicio.rutDifunto || "No indicado"}</span></p>
+            <p><span className="font-bold text-[10px] uppercase tracking-widest text-slate-500 block mb-1">Previsión Institucional</span> <span className="text-slate-200 text-base uppercase tracking-wider">{servicio.previsionLegal} {servicio.afpNombre ? `(${servicio.afpNombre})` : ''}</span></p>
             {servicio.ataud && (
-              <p><span className="font-semibold text-gray-600">Ataúd Seleccionado:</span> {servicio.ataud.nombre}</p>
+              <div className="mt-4 p-4 bg-slate-950 rounded-xl border border-slate-800">
+                <span className="font-bold text-[10px] uppercase tracking-widest text-slate-500 block mb-1">Urna Contratada</span> 
+                <span className="text-amber-400 font-bold uppercase tracking-wider">{servicio.ataud.nombre}</span>
+              </div>
             )}
           </div>
         </div>
 
         {/* Info Ruta */}
-        <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-200">
-          <h3 className="text-lg font-medium mb-4 text-gray-800 flex items-center gap-2"><MapPin className="w-5 h-5"/> Ruta Logística</h3>
-          <div className="space-y-4 text-sm relative border-l-2 border-gray-200 ml-2 pl-4">
-            <div>
-              <div className="absolute w-3 h-3 bg-gray-400 rounded-full -left-[7px] top-1"></div>
-              <p className="font-semibold text-gray-800">Origen (Fallecimiento)</p>
-              <p className="text-gray-600">{servicio.origen?.nombre}</p>
-              <p className="text-xs text-gray-500">{servicio.origenCalle} {servicio.origenNumero}, {servicio.origenVilla || ""}</p>
+        <div className="bg-slate-900 p-6 rounded-2xl shadow-xl border border-slate-800">
+          <h3 className="text-lg font-serif mb-5 text-amber-500 flex items-center gap-2"><MapPin className="w-5 h-5"/> Ruta Logística</h3>
+          <div className="space-y-6 text-sm relative border-l-2 border-slate-800 ml-2 pl-6">
+            <div className="relative">
+              <div className="absolute w-4 h-4 bg-slate-900 border-2 border-slate-600 rounded-full -left-[33px] top-1"></div>
+              <p className="font-bold text-[10px] uppercase tracking-widest text-slate-500 mb-1">Origen (Fallecimiento)</p>
+              <p className="text-slate-200 uppercase tracking-wide">{servicio.origen?.nombre}</p>
+              <p className="text-xs text-slate-400 mt-1 uppercase tracking-wider">{servicio.origenCalle} {servicio.origenNumero}, {servicio.origenVilla || ""}</p>
             </div>
-            <div>
-              <div className="absolute w-3 h-3 bg-gray-400 rounded-full -left-[7px] top-[45%]"></div>
-              <p className="font-semibold text-gray-800">Destino 1 (Velatorio)</p>
-              <p className="text-gray-600">{servicio.destino1?.nombre}</p>
-              <p className="text-xs text-gray-500">{servicio.destino1Calle} {servicio.destino1Numero}</p>
+            <div className="relative">
+              <div className="absolute w-4 h-4 bg-slate-900 border-2 border-amber-500/50 rounded-full -left-[33px] top-1"></div>
+              <p className="font-bold text-[10px] uppercase tracking-widest text-slate-500 mb-1">Destino 1 (Velatorio)</p>
+              <p className="text-slate-200 uppercase tracking-wide">{servicio.destino1?.nombre}</p>
+              <p className="text-xs text-slate-400 mt-1 uppercase tracking-wider">{servicio.destino1Calle} {servicio.destino1Numero}</p>
             </div>
             {servicio.destino2 && (
-              <div>
-                <div className="absolute w-3 h-3 bg-gray-900 rounded-full -left-[7px] bottom-1"></div>
-                <p className="font-semibold text-gray-800">Destino 2 (Cementerio/Crematorio)</p>
-                <p className="text-gray-600">{servicio.destino2?.nombre}</p>
-                <p className="text-xs text-gray-500">{servicio.destino2Calle} {servicio.destino2Numero}</p>
+              <div className="relative">
+                <div className="absolute w-4 h-4 bg-amber-500 rounded-full shadow-[0_0_10px_rgba(245,158,11,0.5)] -left-[33px] top-1"></div>
+                <p className="font-bold text-[10px] uppercase tracking-widest text-amber-500 mb-1">Destino 2 (Cementerio/Crematorio)</p>
+                <p className="text-white font-bold uppercase tracking-wide">{servicio.destino2?.nombre}</p>
+                <p className="text-xs text-slate-300 mt-1 uppercase tracking-wider">{servicio.destino2Calle} {servicio.destino2Numero}</p>
               </div>
             )}
           </div>
         </div>
 
         {/* Motor de Cotización (Costos) */}
-        <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-200">
-          <h3 className="text-lg font-medium mb-4 text-gray-800 flex items-center gap-2"><DollarSign className="w-5 h-5"/> Costos de Traslado</h3>
-          <form action={costAction} className="space-y-4">
-            <div className="grid grid-cols-2 gap-4 text-sm">
+        <div className="bg-slate-900 p-6 rounded-2xl shadow-xl border border-slate-800">
+          <h3 className="text-lg font-serif mb-5 text-amber-500 flex items-center gap-2"><DollarSign className="w-5 h-5"/> Costos Logísticos</h3>
+          <form action={costAction} className="space-y-5">
+            <div className="grid grid-cols-2 gap-4 text-sm bg-slate-950 p-4 rounded-xl border border-slate-800">
               <div>
-                <p className="font-semibold text-gray-600">Distancia Base (Algoritmo)</p>
-                <p className="text-lg font-medium">{servicio.kmCalculadosAlgoritmo} km</p>
+                <p className="font-bold text-[10px] uppercase tracking-widest text-slate-500 mb-1">Distancia Base (IA)</p>
+                <p className="text-xl font-bold text-slate-200">{servicio.kmCalculadosAlgoritmo} <span className="text-xs text-slate-500">km</span></p>
               </div>
               <div>
-                <p className="font-semibold text-gray-600">Tarifa Plana RM</p>
-                <p className="text-lg font-medium">{servicio.aplicarTarifaPlanaRM ? "Aplicada" : "No"}</p>
+                <p className="font-bold text-[10px] uppercase tracking-widest text-slate-500 mb-1">Tarifa Plana RM</p>
+                <p className="text-sm font-bold mt-1">
+                  {servicio.aplicarTarifaPlanaRM ? 
+                    <span className="px-2 py-1 bg-amber-500/10 text-amber-400 border border-amber-500/20 rounded">Aplicada</span> : 
+                    <span className="text-slate-500">No aplica</span>
+                  }
+                </p>
               </div>
             </div>
             <div>
-              <label className="block text-sm font-semibold text-gray-600 mb-1">Km Adicionales / Rurales</label>
+              <label className="block text-[10px] uppercase font-bold tracking-widest text-slate-500 mb-2">Ajuste Manual: Km Adicionales / Rurales</label>
               <div className="flex gap-2">
-                <input type="number" step="0.1" name="kmAdicionalRural" defaultValue={servicio.kmAdicionalRural} className="w-full border-gray-300 rounded-md shadow-sm p-2 bg-gray-50 border focus:ring-2 focus:ring-gray-900 focus:outline-none" />
-                <button type="submit" className="bg-gray-800 text-white px-4 rounded-md hover:bg-gray-700 text-sm font-medium">Actualizar</button>
+                <input type="number" step="0.1" name="kmAdicionalRural" defaultValue={servicio.kmAdicionalRural} className="w-full border-slate-700 rounded-xl shadow-sm p-3 bg-slate-950 border focus:border-amber-500 focus:ring-1 focus:ring-amber-500 text-white font-mono focus:outline-none transition-colors" />
+                <button type="submit" className="bg-slate-800 text-slate-300 px-6 rounded-xl hover:bg-slate-700 hover:text-white transition-colors text-[10px] font-bold uppercase tracking-widest border border-slate-700">Calcular</button>
               </div>
             </div>
-            <div className="pt-4 border-t border-gray-100">
-              <p className="text-sm font-semibold text-gray-600">Costo Total Traslado</p>
-              <p className="text-3xl font-bold text-gray-900">${servicio.costoTotalTrasladoCLP.toLocaleString('es-CL')}</p>
+            <div className="pt-5 border-t border-slate-800 flex flex-col justify-end">
+              <p className="font-bold text-[10px] uppercase tracking-widest text-amber-500 mb-1">Costo Total Traslado</p>
+              <p className="text-4xl font-bold text-white tracking-wider">${servicio.costoTotalTrasladoCLP.toLocaleString('es-CL')}</p>
             </div>
           </form>
         </div>
 
         {/* Asignación de Proveedor */}
-        <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-200">
-          <h3 className="text-lg font-medium mb-4 text-gray-800 flex items-center gap-2"><Truck className="w-5 h-5"/> Asignar Proveedor Operativo</h3>
-          <form action={assignAction} className="space-y-4">
+        <div className="bg-slate-900 p-6 rounded-2xl shadow-xl border border-slate-800 h-fit">
+          <h3 className="text-lg font-serif mb-5 text-amber-500 flex items-center gap-2"><Truck className="w-5 h-5"/> Asignar Proveedor Operativo</h3>
+          <form action={assignAction} className="space-y-5">
             <div>
-              <label className="block text-sm font-semibold text-gray-600 mb-1">Operador / Funeraria</label>
-              <select name="proveedorId" defaultValue={servicio.proveedorId || ""} className="w-full border-gray-300 rounded-md shadow-sm p-2 bg-gray-50 border focus:ring-2 focus:ring-gray-900 focus:outline-none">
-                <option value="">-- Sin Asignar --</option>
+              <label className="block text-[10px] uppercase font-bold tracking-widest text-slate-500 mb-2">Operador / Funeraria Asociada</label>
+              <select name="proveedorId" defaultValue={servicio.proveedorId || ""} className="w-full border-slate-700 rounded-xl shadow-sm p-3 bg-slate-950 border focus:border-amber-500 focus:ring-1 focus:ring-amber-500 text-white focus:outline-none transition-colors uppercase tracking-wide text-sm">
+                <option value="">-- NO ASIGNADO --</option>
                 {proveedores.map((p: any) => (
                   <option key={p.id} value={p.id}>{p.nombreEmpresa} (RUT: {p.rutEmpresa})</option>
                 ))}
               </select>
             </div>
-            <button type="submit" className="w-full bg-blue-600 text-white py-2 rounded-md hover:bg-blue-700 transition-colors font-medium">
-              Guardar Asignación
+            <button type="submit" className="w-full bg-amber-500 text-slate-950 py-3 rounded-xl hover:bg-amber-400 transition-colors font-bold uppercase tracking-widest text-[10px] shadow-[0_0_15px_rgba(245,158,11,0.2)]">
+              Guardar Asignación &rarr;
             </button>
           </form>
         </div>
