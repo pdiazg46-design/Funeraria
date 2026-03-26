@@ -84,7 +84,7 @@ export default function ClientPortal({ catalogos = [] }: { catalogos?: AtaudDB[]
   );
 
   return (
-    <div className="glass-panel w-full rounded-[1.5rem] p-3 md:p-5 relative overflow-hidden flex flex-col justify-between max-h-[85vh]">
+    <div className="glass-panel w-full rounded-[1.5rem] p-3 md:p-5 relative overflow-y-auto flex flex-col max-h-[90vh] md:max-h-[85vh] custom-scrollbar">
       
       <div className="absolute top-0 right-0 w-[300px] h-[300px] bg-amber-500/5 blur-[80px] rounded-full pointer-events-none"></div>
 
@@ -128,7 +128,7 @@ export default function ClientPortal({ catalogos = [] }: { catalogos?: AtaudDB[]
         })}
       </div>
 
-      <div className="relative z-10 flex-grow flex flex-col justify-center w-full">
+      <div className="relative z-10 flex-grow flex flex-col justify-start md:justify-center w-full mt-2 md:mt-0">
         {step === 1 && (
           <div className="animate-in w-full max-w-5xl mx-auto">
             <div className="text-center mb-3">
@@ -272,7 +272,7 @@ export default function ClientPortal({ catalogos = [] }: { catalogos?: AtaudDB[]
               <p className="text-slate-400 text-xs font-light">Sujeto a descuentos previsionales.</p>
             </div>
             
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 md:gap-4 pb-4">
               {catalogos.length === 0 && (
                 <div className="col-span-3 text-center py-10 text-slate-500 text-sm">
                   Cargando catálogo en tiempo real...
@@ -321,7 +321,7 @@ export default function ClientPortal({ catalogos = [] }: { catalogos?: AtaudDB[]
       </div>
 
       {/* Global Nav Bottom Ultra-Compacto */}
-      <div className="mt-4 flex items-center justify-between border-t border-slate-800/80 pt-3 relative z-20">
+      <div className="mt-4 flex items-center justify-between border-t border-slate-800/80 pt-3 relative z-20 shrink-0 sticky bottom-0 bg-slate-950/90 backdrop-blur-md pb-2 -mx-2 px-2">
         <button 
           onClick={handleBack} 
           className={`px-4 py-2 md:px-5 md:py-2 text-[10px] md:text-xs font-bold uppercase tracking-widest text-slate-500 hover:text-white transition-colors flex items-center gap-1.5 ${step === 1 ? 'opacity-0 pointer-events-none' : 'opacity-100'}`}

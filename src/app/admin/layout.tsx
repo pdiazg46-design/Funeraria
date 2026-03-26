@@ -1,6 +1,5 @@
 import Link from 'next/link';
 import { LayoutDashboard, Users, Package, FileText, Settings, ShieldCheck } from 'lucide-react';
-import AdminRootScaler from '@/components/admin/AdminRootScaler';
 import LogoutButton from '@/components/admin/LogoutButton';
 import { getServerSession } from "next-auth/next";
 import { authOptions } from "@/lib/auth";
@@ -11,8 +10,6 @@ export default async function AdminLayout({ children }: { children: React.ReactN
 
   return (
     <div className="flex h-screen w-full overflow-hidden bg-slate-950 text-slate-200 font-sans selection:bg-amber-500/30">
-      <AdminRootScaler />
-      
       {/* Sidebar - Compacted */}
       <aside className="w-56 bg-slate-900 border-r border-slate-800 flex flex-col hidden md:flex">
         <div className="h-16 flex items-center px-6 border-b border-slate-800 bg-slate-950 text-white">
