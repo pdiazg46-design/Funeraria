@@ -127,7 +127,7 @@ export default async function ServicioDetallePage({ params }: { params: Promise<
             <div>
               <label className="block text-[10px] uppercase font-bold tracking-widest text-slate-500 mb-2">Ajuste Manual: Km Adicionales / Rurales</label>
               <div className="flex gap-2">
-                <input type="number" step="0.1" name="kmAdicionalRural" defaultValue={servicio.kmAdicionalRural} onFocus={e => e.target.select()} className="w-full border-slate-700 rounded-xl shadow-sm p-3 bg-slate-950 border focus:border-amber-500 focus:ring-1 focus:ring-amber-500 text-white font-mono focus:outline-none transition-colors" />
+                <input type="number" step="0.1" name="kmAdicionalRural" defaultValue={servicio.kmAdicionalRural} className="w-full border-slate-700 rounded-xl shadow-sm p-3 bg-slate-950 border focus:border-amber-500 focus:ring-1 focus:ring-amber-500 text-white font-mono focus:outline-none transition-colors" />
                 <button type="submit" className="bg-slate-800 text-slate-300 px-6 rounded-xl hover:bg-slate-700 hover:text-white transition-colors text-[10px] font-bold uppercase tracking-widest border border-slate-700">Calcular</button>
               </div>
             </div>
