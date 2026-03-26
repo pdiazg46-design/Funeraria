@@ -3,7 +3,7 @@ import { getServerSession } from "next-auth/next";
 import { authOptions } from "@/lib/auth";
 import { redirect } from "next/navigation";
 import { createUsuario, deleteUsuario } from "./actions";
-import { UserPlus, Trash2, ShieldCheck, Truck, ShieldAlert } from "lucide-react";
+import { UserPlus, Trash2, ShieldCheck, Truck, ShieldAlert, Briefcase } from "lucide-react";
 
 export const dynamic = 'force-dynamic';
 
@@ -27,6 +27,7 @@ export default async function UsuariosPage() {
       case 'SUPER_ADMIN': return <ShieldAlert className="w-4 h-4 text-red-400" />;
       case 'ADMINISTRADOR': return <ShieldCheck className="w-4 h-4 text-emerald-400" />;
       case 'PROVEEDOR': return <Truck className="w-4 h-4 text-amber-400" />;
+      case 'PROVEEDOR_FUNERARIA': return <Briefcase className="w-4 h-4 text-blue-400" />;
       default: return null;
     }
   };
@@ -60,6 +61,7 @@ export default async function UsuariosPage() {
             <select name="rol" className="w-full border-slate-700 rounded-xl p-3 bg-slate-950 border focus:border-amber-500 text-white focus:outline-none font-bold text-xs uppercase tracking-widest">
               <option value="ADMINISTRADOR">Administrador</option>
               <option value="PROVEEDOR">Proveedor (Chofer)</option>
+              <option value="PROVEEDOR_FUNERARIA">Proveedor Funeraria</option>
               <option value="SUPER_ADMIN">Super Admin</option>
             </select>
           </div>

@@ -40,7 +40,7 @@ export default async function AdminLayout({ children }: { children: React.ReactN
           )}
 
           {/* Provider restricted view */}
-          {rol === 'PROVEEDOR' && (
+          {(rol === 'PROVEEDOR' || rol === 'PROVEEDOR_FUNERARIA') && (
             <Link href="/admin/servicios" className="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-slate-800 text-slate-400 hover:text-amber-400 transition-colors font-bold uppercase tracking-widest text-xs">
               <FileText className="w-4 h-4" /> Mis Asignaciones
             </Link>
