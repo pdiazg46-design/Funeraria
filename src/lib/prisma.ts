@@ -8,6 +8,7 @@ const globalForPrisma = globalThis as unknown as {
 
 const connectionString = `${process.env.DATABASE_URL}`
 const pool = new Pool({ connectionString })
+// @ts-ignore - Conflicto de versiones estructurales entre @types/pg internos de Prisma y proyecto
 const adapter = new PrismaPg(pool)
 
 export const prisma = globalForPrisma.prisma ?? new PrismaClient({ adapter })
