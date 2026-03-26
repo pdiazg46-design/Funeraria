@@ -45,7 +45,7 @@ export async function actualizarCostos(servicioId: string, formData: FormData) {
   revalidatePath("/admin/servicios");
 }
 
-export async function actualizarTarifaPlanaGlobal(formData: FormData) {
+export async function actualizarTarifaPlanaGlobal(servicioId: string, formData: FormData) {
   const nuevaTarifa = parseFloat(formData.get("tarifaPlanaRM_CLP") as string);
   if (!nuevaTarifa) return;
 
@@ -63,5 +63,6 @@ export async function actualizarTarifaPlanaGlobal(formData: FormData) {
 
   // Refrescar todos los servicios para que recálculos de UI reflejen el nuevo precio global
   revalidatePath("/admin/servicios");
+  revalidatePath(`/admin/servicios/${servicioId}`);
   revalidatePath(`/admin/servicios/[id]`, 'page');
 }
