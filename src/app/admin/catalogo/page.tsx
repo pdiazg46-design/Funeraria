@@ -2,6 +2,7 @@ import { prisma } from "@/lib/prisma";
 import { createCatalogo, deleteCatalogo, updateCatalogo } from "./actions";
 import { Plus, Trash2, Edit, X } from "lucide-react";
 import Link from "next/link";
+import { default as ImageUploader } from "@/components/admin/ImageUploader";
 
 export const dynamic = 'force-dynamic';
 
@@ -78,10 +79,10 @@ export default async function CatalogoPage({ searchParams }: { searchParams: Pro
                     <label className="block text-[10px] uppercase font-bold tracking-widest text-slate-400 mb-2">Precio Base (CLP)</label>
                     <input required type="number" name="precioBaseCLP" defaultValue={editItem.precioBaseCLP} className="w-full border-slate-700 rounded-xl p-3 bg-slate-950 border focus:border-amber-500 text-amber-500 font-bold focus:outline-none" />
                   </div>
-                  <div className="md:col-span-2">
-                    <label className="block text-[10px] uppercase font-bold tracking-widest text-slate-400 mb-2">Foto / Referencia (Nombre del archivo)</label>
-                    <input type="text" name="imagenUrl" defaultValue={editItem.imagenUrl || ""} className="w-full border-slate-700 rounded-xl p-3 bg-slate-950 border focus:border-amber-500 text-slate-400 focus:outline-none font-mono text-xs" placeholder="Ej: /Plan I.jpeg" />
-                    <p className="text-[10px] text-slate-500 mt-2">💡 Las imágenes fotográficas deben subirse directamente a su servidor (carpeta public). Escriba aquí el nombre exacto de la foto con su extensión (ej: <code>/Plan III.jpeg</code>).</p>
+                  <div className="md:col-span-2 flex flex-col justify-end">
+                    <label className="block text-[10px] uppercase font-bold tracking-widest text-slate-400 mb-2">Fotografía del Producto (Opcional)</label>
+                    <ImageUploader defaultValue={editItem.imagenUrl || ""} />
+                    <p className="text-[9px] text-slate-500 mt-2 italic leading-tight">💡 Click para subir imagen directa. Se optimizará automáticamente para no saturar tu base de datos.</p>
                   </div>
                 </div>
                 <div className="pt-4 flex justify-end">
@@ -113,13 +114,13 @@ export default async function CatalogoPage({ searchParams }: { searchParams: Pro
               <label className="block text-[10px] uppercase font-bold tracking-widest text-slate-500 mb-2">Descripción (Opcional)</label>
               <input type="text" name="descripcion" className="w-full border-slate-700 rounded-xl p-3 bg-slate-950 border focus:border-amber-500 text-slate-300 focus:outline-none" placeholder="Descripción breve..." />
             </div>
-            <div className="md:col-span-2">
-              <label className="block text-[10px] uppercase font-bold tracking-widest text-slate-500 mb-2">Foto / Ref</label>
-              <input type="text" name="imagenUrl" className="w-full border-slate-700 rounded-xl p-3 bg-slate-950 border focus:border-amber-500 text-slate-400 focus:outline-none font-mono text-xs" placeholder="/Plan I.jpeg" />
+            <div className="md:col-span-2 flex flex-col justify-end">
+              <label className="block text-[10px] uppercase font-bold tracking-widest text-slate-500 mb-2">Fotografía (Opcional)</label>
+              <ImageUploader />
             </div>
-            <div className="md:col-span-5 flex justify-end">
-              <button type="submit" className="bg-amber-500 text-slate-950 rounded-xl hover:bg-amber-400 px-8 py-3 flex items-center justify-center gap-2 font-bold uppercase tracking-widest text-[10px] shadow-[0_0_15px_rgba(245,158,11,0.2)]">
-                <Plus className="w-4 h-4" /> Agregar Producto
+            <div className="md:col-span-1 flex flex-col justify-end">
+              <button type="submit" className="bg-amber-500 text-slate-950 rounded-xl hover:bg-amber-400 px-4 py-3 min-h-[95px] w-full flex flex-col items-center justify-center gap-2 font-bold uppercase tracking-widest text-[9px] sm:text-[10px] shadow-[0_0_15px_rgba(245,158,11,0.2)]">
+                <Plus className="w-5 h-5 mb-1" /> Nuevo
               </button>
             </div>
           </form>
