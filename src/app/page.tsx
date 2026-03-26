@@ -28,7 +28,7 @@ export default async function Home() {
             Plataforma Operativa
           </div>
           <h1 className="text-3xl md:text-4xl lg:text-5xl font-serif text-white mb-2 tracking-tight drop-shadow-lg">
-            Asistencia <span className="italic text-slate-300">Integral</span>
+            Asistencia <span className="italic text-slate-300">Integral</span> <span className="text-amber-500 font-light tracking-wide whitespace-nowrap text-2xl md:text-3xl lg:text-4xl">- 24 Horas -</span>
           </h1>
           <p className="text-slate-400 max-w-xl mx-auto text-xs md:text-sm leading-relaxed font-light hidden sm:block">
             Acompañamiento experto y respetuoso. Gestione logística y servicios sin contratiempos.
