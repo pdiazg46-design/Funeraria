@@ -142,6 +142,7 @@ model ServicioFunerario {
   // Proveedor
   proveedorId            String?
   proveedor              Proveedor? @relation(fields: [proveedorId], references: [id])
+  costoOperadorCLP       Float?   @default(0) // Monto que ATSIT paga a la funeraria
 }
 
 enum EstadoServicio {

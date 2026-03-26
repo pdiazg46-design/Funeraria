@@ -66,3 +66,15 @@ export async function actualizarTarifaPlanaGlobal(servicioId: string, formData: 
   revalidatePath(`/admin/servicios/${servicioId}`);
   revalidatePath(`/admin/servicios/[id]`, 'page');
 }
+
+export async function actualizarCostoOperador(servicioId: string, formData: FormData) {
+  const costoOperadorCLP = parseFloat(formData.get("costoOperadorCLP") as string);
+  
+  await prisma.servicioFunerario.update({
+    where: { id: servicioId },
+    data: { costoOperadorCLP }
+  });
+
+  revalidatePath(`/admin/servicios/${servicioId}`);
+  revalidatePath("/admin/servicios");
+}
