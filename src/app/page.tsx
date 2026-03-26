@@ -1,6 +1,13 @@
 import ClientPortal from '@/components/ClientPortal';
+import { prisma } from '@/lib/prisma';
 
-export default function Home() {
+export const dynamic = 'force-dynamic';
+
+export default async function Home() {
+  const catalogos = await prisma.catalogoAtaudes.findMany({
+    orderBy: { precioBaseCLP: 'asc' }
+  });
+
   return (
     <main className="min-h-screen relative flex flex-col items-center selection:bg-amber-500/30">
       
@@ -30,7 +37,7 @@ export default function Home() {
 
         {/* Formulario / Cotizador */}
         <div className="w-full">
-          <ClientPortal />
+          <ClientPortal catalogos={catalogos} />
         </div>
 
       </div>

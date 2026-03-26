@@ -4,9 +4,9 @@ import React, { useState } from 'react';
 import { User, MapPin, Box, ShieldCheck, ChevronRight, Check } from 'lucide-react';
 import { regionesChile, comunasChile } from '../data/geografia';
 
-interface Ataud { id: number; nombre: string; precio: number; image: string; tags: string[]; }
+interface AtaudDB { id: number; nombre: string; material: string; precioBaseCLP: number; imagenUrl: string | null; }
 
-export default function ClientPortal() {
+export default function ClientPortal({ catalogos = [] }: { catalogos?: AtaudDB[] }) {
   const [step, setStep] = useState(1);
   const [formData, setFormData] = useState({
     contactoNombre: '', contactoTel: '+56 ', contactoEmail: '',
@@ -20,11 +20,14 @@ export default function ClientPortal() {
     ataudSeleccionado: null as number | null
   });
 
-  const ataudesMock: Ataud[] = [
-    { id: 1, nombre: 'Modelo Nogal Estándar', precio: 500000, image: 'https://images.unsplash.com/photo-1546484396-fb3fc6f95f98?q=80&w=600&auto=format&fit=crop', tags: ['Pino', 'Económico'] },
-    { id: 2, nombre: 'Urna Roble Tallado', precio: 800000, image: 'https://images.unsplash.com/photo-1510265236894-0d70f90c4276?q=80&w=600&auto=format&fit=crop', tags: ['Madera Nativa', 'Clásico'] },
-    { id: 3, nombre: 'Línea Premium Presidencial', precio: 1200000, image: 'https://images.unsplash.com/photo-1596773539169-dc90e5015b3c?q=80&w=600&auto=format&fit=crop', tags: ['Importado', 'Metálica'] },
-  ];
+  const getImagenParaAtaud = (nombre: string) => {
+    const n = nombre.toUpperCase();
+    if (n.includes('BÁSICO') || n.includes('BASICO') || n.includes('PARVULO') || n.includes('PÁRVULO')) return '/Plan Básico.jpeg';
+    if (n.includes('PREMIUM') || n.includes('PLAN III')) return '/Plan III.jpeg';
+    if (n.includes('CLÁSICA') || n.includes('CLASICA') || n.includes('PLAN II')) return '/Plan II.jpeg';
+    if (n.includes('PLAN I')) return '/Plan I.jpeg';
+    return '/Plan II.jpeg'; // fallback elegante
+  };
 
   const handleNext = () => setStep(prev => prev + 1);
   const handleBack = () => setStep(prev => Math.max(1, prev - 1));
@@ -233,7 +236,12 @@ export default function ClientPortal() {
             </div>
             
             <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
-              {ataudesMock.map(ataud => (
+              {catalogos.length === 0 && (
+                <div className="col-span-3 text-center py-10 text-slate-500 text-sm">
+                  Cargando catálogo en tiempo real...
+                </div>
+              )}
+              {catalogos.map(ataud => (
                 <div 
                   key={ataud.id} 
                   onClick={() => setFormData({...formData, ataudSeleccionado: ataud.id})}
@@ -243,20 +251,18 @@ export default function ClientPortal() {
                       : 'border-slate-800 bg-slate-900/60 hover:border-slate-700'}`}
                 >
                   <div className="h-24 md:h-32 w-full mb-2 rounded-lg overflow-hidden relative border border-slate-700/50">
-                    <img src={ataud.image} alt={ataud.nombre} className={`w-full h-full object-cover transition-transform duration-1000 ${formData.ataudSeleccionado === ataud.id ? 'scale-110' : 'group-hover:scale-105 opacity-80'}`} />
+                    <img src={ataud.imagenUrl || getImagenParaAtaud(ataud.nombre)} alt={ataud.nombre} className={`w-full h-full object-cover transition-transform duration-1000 ${formData.ataudSeleccionado === ataud.id ? 'scale-110' : 'group-hover:scale-105 opacity-80'}`} />
                     <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/20 to-transparent"></div>
                   </div>
                   
                   <div className="relative z-10 px-2 pb-1 text-center">
                     <h4 className="font-serif text-sm md:text-base text-white mb-0.5 uppercase tracking-wide">{ataud.nombre}</h4>
-                    <p className="text-amber-500 font-bold text-lg md:text-xl mb-2 tracking-widest">${ataud.precio.toLocaleString('es-CL')}</p>
+                    <p className="text-amber-500 font-bold text-lg md:text-xl mb-2 tracking-widest">${ataud.precioBaseCLP.toLocaleString('es-CL')}</p>
                     
                     <div className="flex flex-wrap justify-center gap-1">
-                      {ataud.tags.map(tag => (
-                        <span key={tag} className="px-2 py-0.5 bg-slate-950 border border-slate-700 rounded-md text-[8px] text-slate-300 uppercase tracking-widest font-bold">
-                          {tag}
-                        </span>
-                      ))}
+                      <span className="px-2 py-0.5 bg-slate-950 border border-slate-700 rounded-md text-[8px] text-slate-300 uppercase tracking-widest font-bold">
+                        {ataud.material}
+                      </span>
                     </div>
                   </div>
 
