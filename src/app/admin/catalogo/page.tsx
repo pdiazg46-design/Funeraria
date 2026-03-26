@@ -23,17 +23,17 @@ export default async function CatalogoPage({ searchParams }: { searchParams: Pro
   return (
     <div className="space-y-8">
       <div className="flex justify-between items-center">
-        <h2 className="text-3xl font-serif text-white tracking-wide">Catálogo de Ataúdes</h2>
+        <h2 className="text-2xl md:text-3xl font-serif text-slate-900 tracking-wide">Catálogo de Ataúdes</h2>
       </div>
 
       {/* Formatos condicionales de Creación vs Edición Visual */}
       {editItem ? (
-        <div className="bg-slate-900 rounded-2xl shadow-xl border border-amber-500/30 overflow-hidden mb-8">
+        <div className="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden mb-8">
           <div className="bg-amber-500/10 px-6 py-4 border-b border-amber-500/20 flex justify-between items-center">
-            <h3 className="text-lg font-serif text-amber-500 flex items-center gap-2">
+            <h3 className="text-lg font-serif text-amber-600 flex items-center gap-2">
               <Edit className="w-5 h-5"/> Editando Producto
             </h3>
-            <Link href="/admin/catalogo" className="text-slate-400 hover:text-white text-xs flex items-center gap-1 font-bold tracking-widest uppercase transition-colors px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 hover:shadow-lg">
+            <Link href="/admin/catalogo" className="text-slate-500 hover:text-slate-900 text-xs flex items-center gap-1 font-bold tracking-widest uppercase transition-colors px-3 py-1.5 rounded-lg bg-slate-100 hover:bg-slate-200 hover:shadow-sm border border-slate-300">
               <X className="w-4 h-4" /> Cancelar
             </Link>
           </div>
@@ -101,8 +101,8 @@ export default async function CatalogoPage({ searchParams }: { searchParams: Pro
           </div>
         </div>
       ) : (
-        <div className="bg-slate-900 p-6 rounded-2xl shadow-xl border border-slate-800 mb-8">
-          <h3 className="text-lg font-serif mb-5 text-amber-500">Agregar Nuevo Producto</h3>
+        <div className="bg-white p-8 rounded-2xl shadow-sm border border-slate-200 mb-8">
+          <h3 className="text-lg md:text-xl font-serif mb-6 text-amber-500">Agregar Nuevo Producto</h3>
           <form action={createCatalogo} className="grid grid-cols-1 md:grid-cols-5 gap-4 items-start">
             <div className="md:col-span-2">
               <label className="block text-[10px] uppercase font-bold tracking-widest text-slate-500 mb-2">Nombre</label>
@@ -138,10 +138,10 @@ export default async function CatalogoPage({ searchParams }: { searchParams: Pro
       )}
 
       {/* Listado */}
-      <div className="bg-slate-900/50 rounded-2xl shadow-xl border border-slate-800 overflow-hidden backdrop-blur-sm">
-        <div className="overflow-x-auto">
-          <table className="min-w-full divide-y divide-slate-800 flex-1">
-            <thead className="bg-slate-900/80">
+      <div className="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
+        <div className="overflow-x-auto w-full">
+          <table className="table-fixed w-full divide-y divide-slate-100 min-w-[700px]">
+            <thead className="bg-slate-50">
               <tr>
                 <th className="px-6 py-4 text-left text-[10px] font-bold text-slate-500 uppercase tracking-widest">ID</th>
                 <th className="px-6 py-4 text-left text-[10px] font-bold text-slate-500 uppercase tracking-widest">Nombre</th>
@@ -150,7 +150,7 @@ export default async function CatalogoPage({ searchParams }: { searchParams: Pro
                 <th className="px-6 py-4 text-right text-[10px] font-bold text-slate-500 uppercase tracking-widest">Acciones</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-slate-800/60">
+            <tbody className="divide-y divide-slate-100 bg-white">
               {catalogos.length === 0 && (
                 <tr>
                   <td colSpan={5} className="px-6 py-12 text-center text-sm text-slate-500 italic">No hay productos registrados en el catálogo.</td>
@@ -159,19 +159,19 @@ export default async function CatalogoPage({ searchParams }: { searchParams: Pro
               {catalogos.map((item: any) => {
                 const deleteAction = deleteCatalogo.bind(null, item.id);
                 return (
-                  <tr key={item.id} className="hover:bg-slate-800/40 transition-colors">
-                    <td className="px-6 py-5 whitespace-nowrap text-xs text-slate-500 font-mono">#{item.id}</td>
-                    <td className="px-6 py-5 whitespace-nowrap text-sm font-bold text-slate-200 uppercase tracking-wide">{item.nombre}</td>
-                    <td className="px-6 py-5 whitespace-nowrap text-sm text-slate-400 uppercase tracking-wider">{item.material}</td>
-                    <td className="px-6 py-5 whitespace-nowrap text-sm font-bold text-amber-500 tracking-wider">
+                  <tr key={item.id} className="hover:bg-slate-50/50 transition-colors">
+                    <td className="px-6 py-4 whitespace-nowrap text-xs text-slate-500 font-mono">#{item.id}</td>
+                    <td className="px-6 py-4 whitespace-nowrap text-xs font-bold text-slate-900 uppercase tracking-wide truncate">{item.nombre}</td>
+                    <td className="px-6 py-4 whitespace-nowrap text-xs text-slate-600 uppercase tracking-wider truncate">{item.material}</td>
+                    <td className="px-6 py-4 whitespace-nowrap text-xs font-bold text-amber-600 tracking-wider w-32">
                       ${item.precioBaseCLP.toLocaleString('es-CL')}
                     </td>
-                    <td className="px-6 py-5 whitespace-nowrap text-right text-sm">
-                      <Link href={`/admin/catalogo?edit=${item.id}`} className="text-slate-500 hover:text-amber-400 p-2 inline-block rounded-lg hover:bg-slate-800 transition-colors" title="Editar Producto">
+                    <td className="px-6 py-4 whitespace-nowrap text-right text-xs w-24">
+                      <Link href={`/admin/catalogo?edit=${item.id}`} className="text-slate-400 hover:text-amber-500 p-2 inline-block rounded-lg hover:bg-slate-100 transition-colors" title="Editar Producto">
                         <Edit className="w-4 h-4" />
                       </Link>
                       <form action={deleteAction} className="inline ml-1">
-                        <button type="submit" className="text-slate-500 hover:text-red-400 p-2 rounded-lg hover:bg-slate-800 transition-colors" title="Eliminar Producto">
+                        <button type="submit" className="text-slate-400 hover:text-red-500 p-2 rounded-lg hover:bg-red-50 transition-colors" title="Eliminar Producto">
                           <Trash2 className="w-4 h-4" />
                         </button>
                       </form>

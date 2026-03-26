@@ -9,10 +9,10 @@ export default async function AdminLayout({ children }: { children: React.ReactN
   const rol = (session?.user as any)?.rol;
 
   return (
-    <div className="flex h-screen w-full overflow-hidden bg-slate-950 text-slate-200 font-sans selection:bg-amber-500/30">
+    <div className="flex h-screen w-full overflow-hidden bg-slate-50 text-slate-900 font-sans selection:bg-amber-500/30">
       {/* Sidebar - Compacted */}
-      <aside className="w-56 bg-slate-900 border-r border-slate-800 flex flex-col hidden md:flex">
-        <div className="h-16 flex items-center px-6 border-b border-slate-800 bg-slate-950 text-white">
+      <aside className="w-[250px] shrink-0 bg-slate-900 border-r border-slate-800 flex flex-col hidden md:flex">
+        <div className="h-16 flex items-center px-6 border-b border-slate-800 bg-slate-950 text-white shadow-sm">
           <ShieldCheck className="w-5 h-5 text-amber-500 mr-2" />
           <h1 className="text-sm font-serif font-black tracking-widest pl-2">B&D ADMIN</h1>
         </div>
@@ -61,12 +61,9 @@ export default async function AdminLayout({ children }: { children: React.ReactN
       </aside>
 
       {/* Main Content Area */}
-      <main className="flex-1 flex flex-col h-full overflow-hidden bg-slate-950 relative">
-        <div className="absolute top-[-10%] right-[-5%] w-[40%] h-[40%] bg-amber-900/10 blur-[100px] rounded-full pointer-events-none"></div>
-        <div className="flex-1 overflow-y-auto p-4 md:p-8 relative z-10 w-full">
-          <div className="w-full max-w-7xl mx-auto">
-            {children}
-          </div>
+      <main className="flex-1 flex flex-col h-full overflow-auto bg-slate-50 relative">
+        <div className="flex-1 p-6 md:p-8 relative z-10 w-full max-w-7xl mx-auto">
+          {children}
         </div>
       </main>
     </div>
