@@ -23,6 +23,15 @@ export default function ClientPortal({ catalogos = [] }: { catalogos?: AtaudDB[]
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [errorMsg, setErrorMsg] = useState<string | null>(null);
+
+  const isStepValid = () => {
+    if (step === 1) return !!formData.ataudSeleccionado;
+    if (step === 2) return !!formData.origen && !!formData.destino1 && !!formData.origenCalle && !!formData.destino1Calle;
+    if (step === 3) return !!formData.difuntoNombre && formData.difuntoRut.length >= 8;
+    if (step === 4) return !!formData.contactoNombre && !!formData.contactoTel && formData.contactoEmail.includes('@');
+    return true;
+  };
 
   const getImagenParaAtaud = (nombre: string) => {
     const n = nombre.toUpperCase();
@@ -38,16 +47,17 @@ export default function ClientPortal({ catalogos = [] }: { catalogos?: AtaudDB[]
 
   const handleSubmit = async () => {
     setIsSubmitting(true);
+    setErrorMsg(null);
     try {
       const res = await submitServiceForm(formData);
       if (res.success) {
         setIsSubmitted(true);
       } else {
-        alert("Ocurrió un error: " + res.error);
+        setErrorMsg(res.error || "Falla al procesar la solicitud interna.");
       }
     } catch (error) {
       console.error(error);
-      alert("Error de conexión al enviar la solicitud.");
+      setErrorMsg("Error de conexión al enviar la solicitud.");
     } finally {
         setIsSubmitting(false);
     }
@@ -142,7 +152,23 @@ export default function ClientPortal({ catalogos = [] }: { catalogos?: AtaudDB[]
       
       <div className="absolute top-0 right-0 w-[300px] h-[300px] bg-amber-500/5 blur-[80px] rounded-full pointer-events-none"></div>
 
-      {isSubmitted ? (
+      {errorMsg ? (
+        <div className="flex flex-col items-center justify-center p-8 md:p-12 text-center animate-in h-full my-auto">
+          <div className="w-20 h-20 md:w-24 md:h-24 bg-red-500/10 rounded-full flex items-center justify-center mb-6 border border-red-500/30 shadow-[0_0_30px_rgba(239,68,68,0.2)]">
+            <span className="text-red-500 text-4xl font-bold">X</span>
+          </div>
+          <h2 className="text-2xl md:text-3xl font-serif text-white mb-3 tracking-wide">Error en la Solicitud</h2>
+          <p className="text-slate-300 max-w-lg mx-auto text-sm md:text-base leading-relaxed mb-8 font-light">
+            {errorMsg}
+          </p>
+          <button 
+            onClick={() => setErrorMsg(null)}
+            className="px-6 py-2.5 bg-slate-800 hover:bg-slate-700 text-white rounded-xl font-bold text-xs uppercase tracking-widest transition-colors shadow-lg border border-slate-700"
+          >
+            VOLVER Y REVISAR DATOS
+          </button>
+        </div>
+      ) : isSubmitted ? (
         <div className="flex flex-col items-center justify-center p-8 md:p-12 text-center animate-in h-full my-auto">
           <div className="w-20 h-20 md:w-24 md:h-24 bg-amber-500/10 rounded-full flex items-center justify-center mb-6 border border-amber-500/30 shadow-[0_0_30px_rgba(245,158,11,0.2)]">
             <Check className="w-10 h-10 md:w-12 md:h-12 text-amber-500" />
@@ -402,12 +428,12 @@ export default function ClientPortal({ catalogos = [] }: { catalogos?: AtaudDB[]
         
         <button 
           onClick={step < 4 ? handleNext : handleSubmit} 
-          disabled={isSubmitting || (step === 1 && !formData.ataudSeleccionado)}
+          disabled={isSubmitting || !isStepValid()}
           className={`px-6 py-2 md:px-8 md:py-3 rounded-xl font-bold text-[10px] md:text-xs uppercase tracking-widest transition-all duration-300 shadow-xl flex items-center gap-2
             ${step === 4 
               ? 'bg-amber-500 hover:bg-amber-400 text-slate-950 shadow-amber-500/30' 
               : 'bg-white hover:bg-slate-200 text-slate-900 shadow-white/10'}
-            ${(isSubmitting || (step === 1 && !formData.ataudSeleccionado)) ? 'opacity-50 cursor-not-allowed' : ''}`}
+            ${(isSubmitting || !isStepValid()) ? 'opacity-50 cursor-not-allowed' : ''}`}
         >
           {isSubmitting ? (
             <><Loader2 className="w-4 h-4 animate-spin" /> PROCESANDO...</>
