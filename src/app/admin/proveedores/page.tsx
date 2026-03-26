@@ -2,6 +2,8 @@ import { prisma } from "@/lib/prisma";
 import { createProveedor, deleteProveedor } from "./actions";
 import { Plus, Trash2 } from "lucide-react";
 
+export const dynamic = 'force-dynamic';
+
 export default async function ProveedoresPage() {
   const proveedores = await prisma.proveedor.findMany({
     orderBy: { nombreEmpresa: "asc" }

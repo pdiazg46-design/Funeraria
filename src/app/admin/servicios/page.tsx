@@ -2,6 +2,8 @@ import { prisma } from "@/lib/prisma";
 import Link from "next/link";
 import { Eye } from "lucide-react";
 
+export const dynamic = 'force-dynamic';
+
 export default async function ServiciosPage() {
   const servicios = await prisma.servicioFunerario.findMany({
     orderBy: { createdAt: "desc" },
