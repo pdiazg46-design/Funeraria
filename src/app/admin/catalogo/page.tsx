@@ -2,7 +2,6 @@ import { prisma } from "@/lib/prisma";
 import { createCatalogo, deleteCatalogo, updateCatalogo } from "./actions";
 import { Plus, Trash2, Edit, X } from "lucide-react";
 import Link from "next/link";
-import { getCatalogo } from './actions';
 import ImageUploader from '@/components/admin/ImageUploader';
 import CurrencyInput from '@/components/admin/CurrencyInput';
 
