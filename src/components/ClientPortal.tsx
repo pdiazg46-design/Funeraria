@@ -18,7 +18,8 @@ export default function ClientPortal({ catalogos = [] }: { catalogos?: AtaudDB[]
     origenCalle: '', origenNumero: '', origenVilla: '',
     destino1Calle: '', destino1Numero: '', destino1Villa: '',
     destino2Calle: '', destino2Numero: '', destino2Villa: '',
-    ataudSeleccionado: null as number | null
+    ataudSeleccionado: null as number | null,
+    docCedulaFrontal: '', docCedulaTrasera: '', docCertificadoDefuncion: ''
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
@@ -72,6 +73,59 @@ export default function ClientPortal({ catalogos = [] }: { catalogos?: AtaudDB[]
     if (digits.length > 1) formatted += ' ' + digits.substring(1, 5);
     if (digits.length > 5) formatted += ' ' + digits.substring(5, 9);
     setFormData({ ...formData, contactoTel: formatted });
+  };
+
+  const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>, targetField: string) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onload = (event) => {
+      const img = new Image();
+      img.onload = () => {
+        const canvas = document.createElement("canvas");
+        let width = img.width;
+        let height = img.height;
+        const MAX_SIZE = 1000;
+        
+        if (width > height) {
+          if (width > MAX_SIZE) { height *= MAX_SIZE / width; width = MAX_SIZE; }
+        } else {
+          if (height > MAX_SIZE) { width *= MAX_SIZE / height; height = MAX_SIZE; }
+        }
+        
+        canvas.width = width;
+        canvas.height = height;
+        const ctx = canvas.getContext("2d");
+        ctx?.drawImage(img, 0, 0, width, height);
+        
+        const dataUrl = canvas.toDataURL("image/jpeg", 0.6);
+        setFormData(prev => ({ ...prev, [targetField]: dataUrl }));
+      };
+      img.src = event.target?.result as string;
+    };
+    reader.readAsDataURL(file);
+  };
+
+  const MiniUploader = ({ label, field }: { label: string, field: string }) => {
+    const data = formData[field as keyof typeof formData] as string;
+    return (
+      <div className="relative border border-slate-700 bg-slate-900/50 rounded-lg p-2 flex flex-col items-center justify-center min-h-[70px] cursor-pointer hover:border-amber-500/50 transition-colors group overflow-hidden">
+        {data ? (
+          <>
+            <img src={data} className="absolute inset-0 w-full h-full object-cover opacity-30" alt="Preview"/>
+            <Check className="w-5 h-5 text-emerald-400 relative z-10 mb-1" />
+            <span className="text-[8px] font-bold text-emerald-300 uppercase tracking-widest relative z-10 text-center leading-tight">Foto<br/>Guardada</span>
+          </>
+        ) : (
+          <>
+            <Box className="w-4 h-4 text-slate-500 mb-1 group-hover:text-amber-400 transition-colors" />
+            <span className="text-[8px] font-bold text-slate-400 uppercase tracking-widest text-center leading-tight">{label}</span>
+          </>
+        )}
+        <input type="file" accept="image/*" onChange={e => handleFileUpload(e, field)} className="absolute inset-0 opacity-0 cursor-pointer" />
+      </div>
+    );
   };
 
   const StepperIcon = ({ icon: Icon, active, completed }: any) => (
@@ -264,18 +318,18 @@ export default function ClientPortal({ catalogos = [] }: { catalogos?: AtaudDB[]
             
             <div className="pt-3 border-t border-slate-800">
               <label className="block text-[10px] uppercase tracking-widest text-amber-500 mb-2 text-center font-bold">Tipo de Previsión del Fallecido</label>
-              <div className="grid grid-cols-3 gap-2 mb-2">
-                {['IPS', 'AFP', 'NINGUNA'].map((tipo) => (
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-2 mb-2">
+                {['IPS', 'AFP', 'NINGUNA', 'DESCONOZCO'].map((tipo) => (
                   <button 
                     key={tipo}
                     onClick={() => setFormData({...formData, prevision: tipo, afp: tipo === 'AFP' ? formData.afp : ''})}
-                    className={`py-2 px-2 rounded-xl border text-center transition-all flex flex-col items-center justify-center gap-1
+                    className={`py-2 px-1 rounded-xl border text-center transition-all flex flex-col items-center justify-center gap-1
                       ${formData.prevision === tipo 
-                        ? 'border-amber-500 bg-amber-500/10 text-amber-300 border-b-4' 
+                        ? 'border-amber-500 bg-amber-500/10 text-amber-300 border-b-2' 
                         : 'border-slate-700 hover:border-slate-500 text-slate-400 bg-slate-900/50 hover:bg-slate-800'}`}
                   >
-                    <ShieldCheck className={`w-5 h-5 md:w-6 md:h-6 ${formData.prevision === tipo ? 'text-amber-400' : 'text-slate-500'}`} />
-                    <span className="font-bold text-[10px] md:text-xs tracking-widest">{tipo === 'NINGUNA' ? 'PARTICULAR' : tipo}</span>
+                    <ShieldCheck className={`w-4 h-4 ${formData.prevision === tipo ? 'text-amber-400' : 'text-slate-500'}`} />
+                    <span className="font-bold text-[9px] md:text-[10px] tracking-widest">{tipo === 'NINGUNA' ? 'PARTICULAR' : tipo}</span>
                   </button>
                 ))}
               </div>
@@ -292,6 +346,20 @@ export default function ClientPortal({ catalogos = [] }: { catalogos?: AtaudDB[]
                       <option key={afp} value={afp} className="text-slate-900 font-bold">AFP {afp}</option>
                     ))}
                   </select>
+                </div>
+              )}
+
+              {formData.prevision === 'DESCONOZCO' && (
+                <div className="animate-in fade-in mt-3 p-3 border border-slate-700 bg-slate-950 rounded-xl w-full">
+                  <p className="text-[10px] text-slate-400 leading-tight mb-3 text-center">
+                    Si desconoce, por favor suba una foto de la **Cédula de Identidad** (por ambos lados) y el **Certificado de Defunción**. Nosotros evaluaremos la previsión por usted internamente.
+                  </p>
+                  <div className="grid grid-cols-3 gap-2">
+                    <MiniUploader label="Cédula Frontal" field="docCedulaFrontal" />
+                    <MiniUploader label="Cédula Trasera" field="docCedulaTrasera" />
+                    <MiniUploader label="Certif. Defunción" field="docCertificadoDefuncion" />
+                  </div>
+                  <p className="text-[8px] text-slate-500 mt-2 text-center uppercase tracking-widest opacity-60">* No necesita botón de guardar, las fotos quedan anexadas automáticamente de forma segura.</p>
                 </div>
               )}
             </div>

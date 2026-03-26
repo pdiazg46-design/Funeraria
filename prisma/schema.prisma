@@ -97,6 +97,9 @@ model ServicioFunerario {
   rutDifunto             String?
   previsionLegal         TipoPrevision
   afpNombre              String?
+  docCedulaFrontal       String?  @db.Text
+  docCedulaTrasera       String?  @db.Text
+  docCertificadoDefuncion String? @db.Text
   
   // 3. Ubicaciones Geográficas
   // Origen (Fallecimiento)
@@ -147,4 +150,5 @@ enum TipoPrevision {
   IPS
   AFP
   NINGUNA
+  DESCONOZCO
 }
