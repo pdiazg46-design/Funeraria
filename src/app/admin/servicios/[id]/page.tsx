@@ -165,8 +165,9 @@ export default async function ServicioDetallePage({ params }: { params: Promise<
           </form>
         </div>
 
-        {/* Asignación de Proveedor */}
-        <div className="bg-slate-900 p-6 rounded-2xl shadow-xl border border-slate-800 h-fit">
+        {/* Columna Derecha / Inferior: Asignación y Pagos a Proveedor */}
+        <div className="space-y-6">
+          <div className="bg-slate-900 p-6 rounded-2xl shadow-xl border border-slate-800 h-fit">
           <h3 className="text-lg font-serif mb-5 text-amber-500 flex items-center gap-2"><Truck className="w-5 h-5"/> Asignar Proveedor Operativo</h3>
           <form action={assignAction} className="space-y-5">
             <div>
@@ -201,8 +202,9 @@ export default async function ServicioDetallePage({ params }: { params: Promise<
                 <button type="submit" className="bg-slate-800 text-slate-300 px-6 py-2 rounded-xl hover:bg-emerald-500 hover:text-slate-950 hover:border-emerald-500 transition-colors text-[10px] font-bold uppercase tracking-widest border border-slate-700 shrink-0">Fijar Tarifa</button>
               </div>
             </form>
-          </div>
-        )}
+            </div>
+          )}
+        </div>
       </div>
     </div>
   );
